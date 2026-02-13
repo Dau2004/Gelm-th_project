@@ -1,0 +1,41 @@
+{
+  "generated_at": "20260209_140525",
+  "total_samples": 3000,
+  "pathway_distribution": {
+    "TSFP": 1350,
+    "OTP": 1050,
+    "SC_ITP": 600
+  },
+  "muac_thresholds": {
+    "SAM": 115,
+    "MAM_lower": 115,
+    "MAM_upper": 125
+  },
+  "age_range": [
+    6,
+    59
+  ],
+  "muac_range_mm": [
+    91,
+    128
+  ],
+  "features": [
+    "sex",
+    "age_months",
+    "age_source",
+    "muac_mm",
+    "edema",
+    "appetite",
+    "danger_signs",
+    "danger_signs_list",
+    "prev_muac_mm",
+    "days_since_last",
+    "muac_change_mm",
+    "facility_type",
+    "county",
+    "label_pathway",
+    "child_id",
+    "visit_date"
+  ],
+  "guidelines": "South Sudan CMAM 2017"
+}
