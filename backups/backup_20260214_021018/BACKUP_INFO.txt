@@ -1,0 +1,21 @@
+Backup Created: Sat Feb 14 02:11:03 CAT 2026
+Backup Location: /Users/ram/Downloads/MUAC_DEVELOPMENT/backups/backup_20260214_021018
+
+Contents:
+- Database: db.sqlite3
+- Backend: gelmath_backend/
+- Web Dashboard: gelmath_web/
+- Mobile App: cmam_mobile_app/
+- Documentation: *.md files
+
+To Restore:
+1. Copy db.sqlite3 to gelmath_backend/
+2. Copy code folders as needed
+3. Run: cd gelmath_backend && python manage.py runserver 8000
+4. Run: cd gelmath_web && npm start
+
+Database Stats:
+- Assessments: N/A
+- Users: N/A
+- Facilities: N/A
+- Referrals: N/A
