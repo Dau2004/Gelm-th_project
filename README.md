@@ -1,4 +1,4 @@
-# 🏥 CMAM ML System - Community-based Management of Acute Malnutrition
+# Gelmëth System - Community-based Management of Acute Malnutrition
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
@@ -25,7 +25,7 @@
 
 ---
 
-## 📖 Description
+## Description
 
 The **CMAM ML System** is a comprehensive machine learning solution for screening and managing acute malnutrition in children aged 6-59 months. Built on the **Community Management of Acute Malnutrition (CMAM) guidelines from South Sudan 2017**, this system combines:
 
@@ -34,7 +34,7 @@ The **CMAM ML System** is a comprehensive machine learning solution for screenin
 - **Offline-First Architecture**: Works in remote areas without internet connectivity
 - **WHO Compliance**: Uses official WHO LMS tables for Z-score calculation
 
-### 🎯 Problem Statement
+### Problem Statement
 
 Malnutrition affects millions of children in developing countries. Community Health Workers (CHWs) need:
 - Quick, accurate screening tools
@@ -42,7 +42,7 @@ Malnutrition affects millions of children in developing countries. Community Hea
 - Evidence-based care pathway recommendations
 - Quality control for measurements
 
-### 💡 Solution
+### Solution
 
 Our system provides:
 1. **Real-time ML predictions** for care pathways (SC-ITP, OTP, TSFP)
@@ -86,45 +86,45 @@ CMAM_ML_System/
 
 ---
 
-## ✨ Features
+## Features
 
 ### 🤖 Machine Learning
-- ✅ **Model 1**: Care pathway classifier (SAM/MAM/Healthy → SC-ITP/OTP/TSFP)
-- ✅ **Model 2**: Quality checker (detects measurement errors)
-- ✅ Random Forest ensemble (100 trees, depth 10)
-- ✅ 94% accuracy on pathway classification
-- ✅ 89% accuracy on quality detection
+- **Model 1**: Care pathway classifier (SAM/MAM/Healthy → SC-ITP/OTP/TSFP)
+- **Model 2**: Quality checker (detects measurement errors)
+- Random Forest ensemble (100 trees, depth 10)
+- 94% accuracy on pathway classification
+- 89% accuracy on quality detection
 
 ### 📱 Mobile App (Flutter)
-- ✅ Offline-first with SQLite
-- ✅ Real-time ML predictions
-- ✅ WHO Z-score calculation
-- ✅ CMAM guideline validation
-- ✅ Auto-sync when online
-- ✅ Modern UI (dark green theme)
+- Offline-first with SQLite
+- Real-time ML predictions
+- WHO Z-score calculation
+- CMAM guideline validation
+- Auto-sync when online
+- Modern UI (dark green theme)
 
 ### 🌐 Web Dashboard (React)
-- ✅ MoH analytics dashboard
-- ✅ Interactive visualizations (Recharts)
-- ✅ Geographic mapping (Leaflet)
-- ✅ PDF report generation
-- ✅ User management
-- ✅ Responsive design
+- MoH analytics dashboard
+- Interactive visualizations (Recharts)
+- Geographic mapping (Leaflet)
+- PDF report generation
+- User management
+- Responsive design
 
-### 🔌 REST API (Django)
-- ✅ RESTful endpoints
-- ✅ JWT authentication
-- ✅ Model integration
-- ✅ Swagger documentation
-- ✅ PostgreSQL/SQLite support
+### REST API (Django)
+- RESTful endpoints
+- JWT authentication
+- Model integration
+- Swagger documentation
+- PostgreSQL/SQLite support
 
 ---
 
-## 📊 Dataset
+## Dataset
 
 ### Source: CMAM South Sudan 2017 Guidelines
 
-Our dataset is based on the **Community Management of Acute Malnutrition (CMAM)** guidelines published by the Ministry of Health, South Sudan in 2017. This comprehensive document provides:
+Our dataset is from **Community Management of Acute Malnutrition (CMAM) South Sudan** and guilded by the guidelines from the Ministry of Health, South Sudan. This comprehensive document provides:
 
 - **Clinical protocols** for SAM/MAM management
 - **Admission criteria** based on MUAC and edema
@@ -135,8 +135,7 @@ Our dataset is based on the **Community Management of Acute Malnutrition (CMAM)*
 
 ### Dataset Composition
 
-#### 1. **Clean Dataset** (4,000 samples)
-- **Source**: Synthetic data generated following CMAM guidelines
+#### 1. **Clean Dataset** 
 - **Age Range**: 6-59 months (WHO standard)
 - **Features**:
   - `child_id`: Unique identifier
@@ -178,9 +177,20 @@ After analyzing potential image-based approaches for edema detection, we decided
 #### 2. **Clinical Status Distribution**
 ```
 Target Distribution (6-59 months):
-- Healthy: ~60-70%
-- MAM: ~20-25%
-- SAM: ~10-15%
+- Total children (6-59 months): 184
+
+- Distribution by nutrition status (counts):
+nutrition_status
+Healthy    173
+MAM          7
+SAM          4
+
+
+- Distribution by nutrition status (percentages):
+nutrition_status
+Healthy    94.02
+MAM         3.80
+SAM         2.17
 
 Available Image Data:
 - Heavily skewed toward severe cases
@@ -202,10 +212,10 @@ The official CMAM South Sudan 2017 guidelines prioritize:
 - **Danger signs** (clinical checklist)
 
 **Conclusion**: We focused on **structured clinical data** (MUAC, age, edema grade, appetite, danger signs) which:
-- ✅ Aligns with CMAM protocols
-- ✅ Works offline without image processing
-- ✅ Provides consistent, reliable measurements
-- ✅ Achieves 94% accuracy without images
+-  Aligns with CMAM protocols
+-  Works offline without image processing
+-  Provides consistent, reliable measurements
+-  Achieves 94% accuracy without images
 
 ---
 
@@ -384,7 +394,7 @@ jupyter notebook
 
 ---
 
-## 🎨 Designs & Screenshots
+## Designs & Screenshots
 
 ### Mobile App Interface
 
@@ -514,9 +524,9 @@ jupyter notebook
 │  - JWT Auth     │
 └────────┬────────┘
          │
-         ├─────────────────┬─────────────────┐
-         │                 │                 │
-         ▼                 ▼                 ▼
+         ├─────────────────┬
+         │                 │                 
+         ▼                 ▼               
 ┌──────────────┐  ┌──────────────┐
 │   Doctor     │  │     MoH      │
 │  Dashboard   │  │  Dashboard   │
@@ -544,18 +554,19 @@ Signs      Model 1              Dashboard                                   CHW 
 
 ---
 
-## 🚀 Deployment Plan
+## Deployment Plan
 
-### Phase 1: Pilot Deployment (Month 1-2)
+### Phase 1: Pilot Deployment 
+first to second week of march
 
-#### Week 1-2: Infrastructure Setup
+#### Week 1: Infrastructure Setup
 - [ ] **Cloud Server**: AWS EC2 (t3.medium) or DigitalOcean Droplet
 - [ ] **Database**: PostgreSQL 15+ (managed service)
 - [ ] **Storage**: S3 for backups
 - [ ] **Domain**: Register domain (e.g., cmam-southsudan.org)
 - [ ] **SSL**: Let's Encrypt certificates
 
-#### Week 3-4: Backend Deployment
+#### Week 2: Backend Deployment
 ```bash
 # Production server setup
 sudo apt update && sudo apt upgrade -y
@@ -595,7 +606,7 @@ server {
 }
 ```
 
-#### Week 5-6: Web Dashboard Deployment
+#### Week 2: Web Dashboard Deployment
 ```bash
 cd gelmath_web
 
@@ -609,84 +620,19 @@ netlify deploy --prod
 sudo cp -r build/* /var/www/cmam/dashboard/
 ```
 
-#### Week 7-8: Mobile App Distribution
+#### Week 2: Mobile App Distribution
 - [ ] **Android**: Publish to Google Play Store
   ```bash
   flutter build appbundle --release
   # Upload to Play Console
   ```
-- [ ] **iOS**: Publish to App Store
-  ```bash
-  flutter build ios --release
-  # Submit via Xcode
-  ```
+
 - [ ] **Alternative**: APK direct distribution for pilot
 
-### Phase 2: Training & Rollout (Month 3-4)
 
-#### CHW Training Program
-- [ ] **Week 1**: Train 20 CHWs in pilot district
-- [ ] **Week 2**: Field testing with supervision
-- [ ] **Week 3**: Feedback collection and bug fixes
-- [ ] **Week 4**: Expand to 50 CHWs
 
-#### Training Materials
-- [ ] User manual (English/Arabic)
-- [ ] Video tutorials
-- [ ] Quick reference cards
-- [ ] Troubleshooting guide
 
-### Phase 3: Scale-Up (Month 5-6)
 
-#### National Rollout
-- [ ] Deploy to all 10 states
-- [ ] Train 500+ CHWs
-- [ ] Establish helpdesk
-- [ ] Monitor system performance
-
-#### Monitoring & Evaluation
-- [ ] **Daily**: System uptime, API response times
-- [ ] **Weekly**: User adoption, data quality
-- [ ] **Monthly**: Clinical outcomes, model accuracy
-
-### Infrastructure Requirements
-
-#### Server Specifications
-```yaml
-Production Server:
-  CPU: 4 cores
-  RAM: 8 GB
-  Storage: 100 GB SSD
-  Bandwidth: 1 TB/month
-  OS: Ubuntu 22.04 LTS
-
-Database Server:
-  PostgreSQL: 15+
-  RAM: 4 GB
-  Storage: 50 GB SSD
-  Backups: Daily automated
-
-Estimated Cost: $50-100/month
-```
-
-#### Scaling Strategy
-```
-Phase 1 (Pilot): 100 users
-  - Single server
-  - SQLite/PostgreSQL
-  - 1,000 assessments/day
-
-Phase 2 (Regional): 500 users
-  - Load balancer
-  - PostgreSQL (managed)
-  - 5,000 assessments/day
-
-Phase 3 (National): 2,000+ users
-  - Auto-scaling (2-5 servers)
-  - PostgreSQL cluster
-  - Redis cache
-  - 20,000+ assessments/day
-```
 
 ### Backup & Disaster Recovery
 
@@ -813,11 +759,6 @@ Classification Report:
 weighted avg       0.94      0.94      0.94       605
 ```
 
-**Feature Importance**:
-1. MUAC: 45.04%
-2. Appetite: 28.96%
-3. Danger Signs: 17.24%
-
 ### Model 2: Quality Classifier
 
 ```
@@ -844,21 +785,6 @@ weighted avg       0.92      0.89      0.90      1214
 
 MIT License - See [LICENSE](LICENSE) file
 
----
-
-## 👥 Contributors
-
-- **Your Name** - Lead Developer
-- **Team Members** - Contributors
-
----
-
-## 📞 Support
-
-For issues, questions, or contributions:
-- **Email**: support@cmam-southsudan.org
-- **GitHub Issues**: [Report Bug](https://github.com/YOUR_USERNAME/CMAM_ML_System/issues)
-- **Documentation**: [Wiki](https://github.com/YOUR_USERNAME/CMAM_ML_System/wiki)
 
 ---
 
@@ -866,8 +792,6 @@ For issues, questions, or contributions:
 
 - **Ministry of Health, South Sudan** - CMAM Guidelines 2017
 - **World Health Organization (WHO)** - LMS reference tables
-- **UNICEF** - Technical support
-- **Community Health Workers** - Field testing and feedback
 
 ---
 
