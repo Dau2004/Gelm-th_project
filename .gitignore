@@ -1,0 +1,198 @@
+# ============================================
+# CMAM ML System - .gitignore
+# ============================================
+
+# ============================================
+# Python
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ============================================
+# Jupyter Notebooks
+# ============================================
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# ============================================
+# Django
+# ============================================
+*.log
+*.pot
+*.pyc
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+local_settings.py
+server.log
+
+# ============================================
+# Flutter/Dart
+# ============================================
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+*.iml
+*.lock
+.metadata
+.flutter-plugins-dependencies
+
+# Flutter/Dart - Platform specific
+android/.gradle/
+android/local.properties
+android/captures/
+android/gradlew
+android/gradlew.bat
+android/.gradle
+android/key.properties
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Podfile.lock
+macos/Pods/
+macos/.symlinks/
+
+# ============================================
+# React/Node.js
+# ============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ============================================
+# IDEs and Editors
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ============================================
+# Backups and Temporary Files
+# ============================================
+backups/
+*.bak
+*.tmp
+*.temp
+*_backup.*
+backup_*/
+
+# ============================================
+# Intermediate/Generated Data Files
+# ============================================
+# Keep only essential datasets, exclude intermediate versions
+cmam_gold_*.csv
+cmam_realistic_*.csv
+cmam_training_data_*.csv
+train_*.csv
+val_*.csv
+test_*.csv
+*_clean_*.csv
+feature_importance.csv
+
+# ============================================
+# Generated Images/Plots
+# ============================================
+model2_confusion_matrix.png
+model2_feature_importance.png
+quality_dataset_overview.png
+
+# ============================================
+# Metadata Files (intermediate versions)
+# ============================================
+metadata_*.json
+quality_metadata_*.json
+
+# ============================================
+# Documentation (intermediate/debug files)
+# ============================================
+BACKUP_AND_RESTORE.md
+CONNECTION_GUIDE.md
+DASHBOARD_ZERO_DATA_FIX.md
+DEFINITIVE_FIX.md
+FACILITY_TRACKING.md
+INTEGRATION_STATUS.md
+INVESTIGATION_SUMMARY.md
+MOBILE_BACKEND_INTEGRATION.md
+MODEL2_ANSWERS.md
+MODEL2_COMPLETE.md
+MOH_DASHBOARD_ZERO_DATA_FIX.md
+NAVIGATION_UPDATE.md
+PHASE2_MOBILE_AUTH_COMPLETE.md
+PHASE3_BACKEND_SYNC.md
+POSTGRESQL_MIGRATION.md
+QUICK_FIX_GUIDE.md
+QUICK_LOGIN.txt
+QUICK_START.md
+REFERRAL_FEATURE_COMPLETE.md
+REFERRAL_SYSTEM.md
+REFERRAL_TROUBLESHOOTING.md
+SCHEMA_VERIFICATION.md
+SYNC_ISSUE_ANALYSIS.md
+SYSTEM_STATE.md
+SYSTEM_STATUS_REPORT.md
+TESTING_GUIDE.md
+USER_CREATION_FIX.md
+USER_DISPLAY_FIX.md
+USER_INACTIVE_STATUS_FIX.md
+USER_MANAGEMENT_IMPLEMENTATION.md
+
+# ============================================
+# Scripts (test/debug scripts)
+# ============================================
+backup.sh
+start_backend.sh
+test_sync.sh
+test_system_integration.sh
+test_system.py
+test_system.sh
+test_who_zscore.py
+setup_test_users.py
+quality_dataset_builder.py
+
+# ============================================
+# Environment Variables
+# ============================================
+.env
+*.env
+.env.*
+!.env.example
+
+# ============================================
+# OS Files
+# ============================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================================
+# Certificates and Keys
+# ============================================
+*.pem
+*.key
+*.cert
+*.crt
