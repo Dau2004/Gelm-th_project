@@ -1,4 +1,4 @@
-# Gelmëth System - Community-based Management of Acute Malnutrition
+# 🏥 CMAM ML System - Community-based Management of Acute Malnutrition
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
@@ -25,16 +25,16 @@
 
 ---
 
-## Description
+## 📖 Description
 
-The **CMAM ML System** is a comprehensive machine learning solution for screening and managing acute malnutrition in children aged 6-59 months. Built on the **Community Management of Acute Malnutrition (CMAM) guidelines from South Sudan 2017**, this system combines:
+The **Gelmëth System** is a comprehensive machine learning solution for screening and managing acute malnutrition in children aged 6-59 months. Built on the **Community Management of Acute Malnutrition (CMAM) guidelines from South Sudan 2017**, this system combines:
 
 - **Two ML Models**: Pathway classification (94% accuracy) and quality checking (89% accuracy)
 - **Three Deployment Options**: Mobile app (Flutter), Web dashboard (React), and REST API (Django)
 - **Offline-First Architecture**: Works in remote areas without internet connectivity
 - **WHO Compliance**: Uses official WHO LMS tables for Z-score calculation
 
-### Problem Statement
+### 🎯 Problem Statement
 
 Malnutrition affects millions of children in developing countries. Community Health Workers (CHWs) need:
 - Quick, accurate screening tools
@@ -42,7 +42,7 @@ Malnutrition affects millions of children in developing countries. Community Hea
 - Evidence-based care pathway recommendations
 - Quality control for measurements
 
-### Solution
+### 💡 Solution
 
 Our system provides:
 1. **Real-time ML predictions** for care pathways (SC-ITP, OTP, TSFP)
@@ -60,18 +60,6 @@ git clone https://github.com/YOUR_USERNAME/CMAM_ML_System.git
 cd CMAM_ML_System
 ```
 
-## 🎥 Live Demo
-
-**Watch the system in action:**
-[📹 Video Demo](https://drive.google.com/file/d/1UIaIGhSSmQai5rPlmaBEfCwrq0OSTckO/view?usp=sharing)
-
-The demo showcases:
-- Mobile app assessment workflow
-- Real-time ML predictions
-- Doctor dashboard analytics
-- MoH dashboard overview
-- Offline-first capabilities
-
 **Repository Structure:**
 ```
 CMAM_ML_System/
@@ -80,51 +68,52 @@ CMAM_ML_System/
 ├── Notebooks/            # Jupyter notebooks for training
 ├── cmam_mobile_app/      # Flutter mobile application
 ├── cmam_backend/         # Django REST API
+├── gelmath_backend/      # Django REST API
 ├── gelmath_web/          # React dashboard
 └── README.md             # This file
 ```
 
 ---
 
-## Features
+## ✨ Features
 
 ### 🤖 Machine Learning
-- **Model 1**: Care pathway classifier (SAM/MAM/Healthy → SC-ITP/OTP/TSFP)
-- **Model 2**: Quality checker (detects measurement errors)
-- Random Forest ensemble (100 trees, depth 10)
-- 94% accuracy on pathway classification
-- 89% accuracy on quality detection
+- ✅ **Model 1**: Care pathway classifier (SAM/MAM/Healthy → SC-ITP/OTP/TSFP)
+- ✅ **Model 2**: Quality checker (detects measurement errors)
+- ✅ Random Forest ensemble (100 trees, depth 10)
+- ✅ 94% accuracy on pathway classification
+- ✅ 89% accuracy on quality detection
 
 ### 📱 Mobile App (Flutter)
-- Offline-first with SQLite
-- Real-time ML predictions
-- WHO Z-score calculation
-- CMAM guideline validation
-- Auto-sync when online
-- Modern UI (dark green theme)
+- ✅ Offline-first with SQLite
+- ✅ Real-time ML predictions
+- ✅ WHO Z-score calculation
+- ✅ CMAM guideline validation
+- ✅ Auto-sync when online
+- ✅ Modern UI (dark green theme)
 
 ### 🌐 Web Dashboard (React)
-- MoH analytics dashboard
-- Interactive visualizations (Recharts)
-- Geographic mapping (Leaflet)
-- PDF report generation
-- User management
-- Responsive design
+- ✅ MoH analytics dashboard
+- ✅ Interactive visualizations (Recharts)
+- ✅ Geographic mapping (Leaflet)
+- ✅ PDF report generation
+- ✅ User management
+- ✅ Responsive design
 
-### REST API (Django)
-- RESTful endpoints
-- JWT authentication
-- Model integration
-- Swagger documentation
-- PostgreSQL/SQLite support
+### 🔌 REST API (Django)
+- ✅ RESTful endpoints
+- ✅ JWT authentication
+- ✅ Model integration
+- ✅ Swagger documentation
+- ✅ PostgreSQL/SQLite support
 
 ---
 
-## Dataset
+## 📊 Dataset
 
 ### Source: CMAM South Sudan 2017 Guidelines
 
-Our dataset is from **Community Management of Acute Malnutrition (CMAM) South Sudan** and guilded by the guidelines from the Ministry of Health, South Sudan. This comprehensive document provides:
+Our dataset is based on the **Community Management of Acute Malnutrition (CMAM)** guidelines published by the Ministry of Health, South Sudan in 2017. This comprehensive document provides:
 
 - **Clinical protocols** for SAM/MAM management
 - **Admission criteria** based on MUAC and edema
@@ -135,7 +124,7 @@ Our dataset is from **Community Management of Acute Malnutrition (CMAM) South Su
 
 ### Dataset Composition
 
-#### 1. **Clean Dataset** 
+#### 1. **Dataset** 
 - **Age Range**: 6-59 months (WHO standard)
 - **Features**:
   - `child_id`: Unique identifier
@@ -177,20 +166,9 @@ After analyzing potential image-based approaches for edema detection, we decided
 #### 2. **Clinical Status Distribution**
 ```
 Target Distribution (6-59 months):
-- Total children (6-59 months): 184
-
-- Distribution by nutrition status (counts):
-nutrition_status
-Healthy    173
-MAM          7
-SAM          4
-
-
-- Distribution by nutrition status (percentages):
-nutrition_status
-Healthy    94.02
-MAM         3.80
-SAM         2.17
+- Healthy: ~60-70%
+- MAM: ~20-25%
+- SAM: ~10-15%
 
 Available Image Data:
 - Heavily skewed toward severe cases
@@ -212,10 +190,10 @@ The official CMAM South Sudan 2017 guidelines prioritize:
 - **Danger signs** (clinical checklist)
 
 **Conclusion**: We focused on **structured clinical data** (MUAC, age, edema grade, appetite, danger signs) which:
--  Aligns with CMAM protocols
--  Works offline without image processing
--  Provides consistent, reliable measurements
--  Achieves 94% accuracy without images
+- ✅ Aligns with CMAM protocols
+- ✅ Works offline without image processing
+- ✅ Provides consistent, reliable measurements
+- ✅ Achieves 94% accuracy without images
 
 ---
 
@@ -394,27 +372,18 @@ jupyter notebook
 
 ---
 
-## Designs & Screenshots
+## 🎨 Designs & Screenshots
 
 ### Mobile App Interface
 
-#### 1. **Login Screen**
-![Login Screen](Screenshot/Login_mobileapp.png)
-- Secure authentication
-- CHW credentials
-- Offline mode option
-- Remember me functionality
-
-#### 2. **Home Screen**
-![Home Screen](Screenshot/Home_mobileapp.png)
+#### 1. **Home Screen**
+![Home Screen](docs/screenshots/mobile_home.png)
 - Clean, intuitive navigation
 - Dark green (#2D5F3F) primary color
 - Quick access to assessment form
-- Sync status indicator
-- Recent assessments summary
 
-#### 3. **Assessment Form**
-![Assessment Form](Screenshot/Assessment_mobileapp.png)
+#### 2. **Assessment Form**
+![Assessment Form](docs/screenshots/mobile_assessment.png)
 - **Input Fields**:
   - Child ID
   - Sex (M/F)
@@ -425,82 +394,42 @@ jupyter notebook
   - Danger signs checklist
 - **Real-time Validation**
 - **Offline Capability**
-- **WHO Z-score calculation**
 
-#### 4. **Results Screen**
-![Results Screen](Screenshot/result_mobileapp.png)
+#### 3. **Results Screen**
+![Results Screen](docs/screenshots/mobile_results.png)
 - **Clinical Status**: SAM/MAM/Healthy
 - **Care Pathway**: SC-ITP/OTP/TSFP
 - **Confidence Score**: 0-100%
 - **Quality Flag**: OK/SUSPICIOUS
-- **CMAM Guideline Validation**
 - **Action Buttons**: Save, Share, Print
 
-#### 5. **History Screen**
-![History](Screenshot/History_mobileapp.png)
+#### 4. **History Screen**
+![History](docs/screenshots/mobile_history.png)
 - Past assessments list
 - Sync status indicator
 - Search and filter options
-- Export functionality
 
-### Web Dashboards
+### Web Dashboard
 
-#### 1. **Doctor Dashboard**
-![Doctor Dashboard](Screenshot/Doctordasboard.png)
-- **Patient Management**:
-  - Active cases list
-  - Referral tracking
-  - Follow-up scheduling
-  - Treatment history
-- **Clinical Tools**:
-  - Assessment review
-  - Prescription management
-  - Progress monitoring
-- **Communication**:
-  - CHW coordination
-  - Patient notes
-  - Alerts and notifications
+#### 1. **National Summary**
+![Dashboard](docs/screenshots/web_dashboard.png)
+- Total assessments
+- SAM/MAM/Healthy distribution
+- Trend charts (Recharts)
+- Geographic map (Leaflet)
 
-#### 2. **MoH Dashboard - Overview**
-![MoH Overview](Screenshot/MoH_Overview.png)
-- **National Statistics**:
-  - Total assessments
-  - SAM/MAM/Healthy distribution
-  - Trend analysis
-  - Coverage metrics
-- **Key Performance Indicators**:
-  - Screening rate
-  - Referral completion
-  - Treatment success rate
-  - Geographic coverage
+#### 2. **Facility Analytics**
+![Facility](docs/screenshots/web_facility.png)
+- Facility-level statistics
+- Performance indicators
+- Case distribution
+- Export to PDF/Excel
 
-#### 3. **MoH Dashboard - Analytics**
-![MoH Analytics](Screenshot/MoH_analytics.png)
-- **Data Visualizations**:
-  - Interactive charts (Recharts)
-  - Geographic mapping (Leaflet)
-  - Time series analysis
-  - Facility comparisons
-- **Reports**:
-  - Monthly summaries
-  - Facility performance
-  - Export to PDF/Excel
-  - Custom date ranges
-
-#### 4. **User Management**
-![User Management](Screenshot/MoH_Usersmanagement.png)
-- **Account Administration**:
-  - CHW accounts
-  - Doctor accounts
-  - MoH staff accounts
-- **Access Control**:
-  - Role-based permissions
-  - Facility assignments
-  - Activity logs
-- **Monitoring**:
-  - Login history
-  - Data quality metrics
-  - System usage statistics
+#### 3. **User Management**
+![Users](docs/screenshots/web_users.png)
+- CHW accounts
+- Role-based access
+- Activity logs
 
 ### System Architecture
 
@@ -510,7 +439,6 @@ jupyter notebook
 │  (Flutter)      │
 │  - Offline DB   │
 │  - ML Models    │
-│  - CHW Interface│
 └────────┬────────┘
          │
          │ Auto-sync
@@ -521,21 +449,17 @@ jupyter notebook
 │  (Django)       │
 │  - Model 1 & 2  │
 │  - PostgreSQL   │
-│  - JWT Auth     │
 └────────┬────────┘
          │
-         ├─────────────────┬
-         │                 │                 
-         ▼                 ▼               
-┌──────────────┐  ┌──────────────┐
-│   Doctor     │  │     MoH      │
-│  Dashboard   │  │  Dashboard   │
-│  (React)     │  │  (React)     │
-│              │  │              │
-│ - Patients   │  │ - Analytics  │
-│ - Referrals  │  │ - Reports    │
-│ - Follow-ups │  │ - Maps       │
-└──────────────┘  └──────────────┘
+         │ Real-time
+         │
+         ▼
+┌─────────────────┐
+│  Web Dashboard  │
+│  (React)        │
+│  - Analytics    │
+│  - Reports      │
+└─────────────────┘
 ```
 
 ### Data Flow Diagram
@@ -554,19 +478,18 @@ Signs      Model 1              Dashboard                                   CHW 
 
 ---
 
-## Deployment Plan
+## 🚀 Deployment Plan
 
-### Phase 1: Pilot Deployment 
-first to second week of march
+### Phase 1: Pilot Deployment (Month 1-2)
 
-#### Week 1: Infrastructure Setup
+#### Week 1-2: Infrastructure Setup
 - [ ] **Cloud Server**: AWS EC2 (t3.medium) or DigitalOcean Droplet
 - [ ] **Database**: PostgreSQL 15+ (managed service)
 - [ ] **Storage**: S3 for backups
 - [ ] **Domain**: Register domain (e.g., cmam-southsudan.org)
 - [ ] **SSL**: Let's Encrypt certificates
 
-#### Week 2: Backend Deployment
+#### Week 3-4: Backend Deployment
 ```bash
 # Production server setup
 sudo apt update && sudo apt upgrade -y
@@ -606,7 +529,7 @@ server {
 }
 ```
 
-#### Week 2: Web Dashboard Deployment
+#### Week 5-6: Web Dashboard Deployment
 ```bash
 cd gelmath_web
 
@@ -620,19 +543,84 @@ netlify deploy --prod
 sudo cp -r build/* /var/www/cmam/dashboard/
 ```
 
-#### Week 2: Mobile App Distribution
+#### Week 7-8: Mobile App Distribution
 - [ ] **Android**: Publish to Google Play Store
   ```bash
   flutter build appbundle --release
   # Upload to Play Console
   ```
-
+- [ ] **iOS**: Publish to App Store
+  ```bash
+  flutter build ios --release
+  # Submit via Xcode
+  ```
 - [ ] **Alternative**: APK direct distribution for pilot
 
+### Phase 2: Training & Rollout (Month 3-4)
 
+#### CHW Training Program
+- [ ] **Week 1**: Train 20 CHWs in pilot district
+- [ ] **Week 2**: Field testing with supervision
+- [ ] **Week 3**: Feedback collection and bug fixes
+- [ ] **Week 4**: Expand to 50 CHWs
 
+#### Training Materials
+- [ ] User manual (English/Arabic)
+- [ ] Video tutorials
+- [ ] Quick reference cards
+- [ ] Troubleshooting guide
 
+### Phase 3: Scale-Up (Month 5-6)
 
+#### National Rollout
+- [ ] Deploy to all 10 states
+- [ ] Train 500+ CHWs
+- [ ] Establish helpdesk
+- [ ] Monitor system performance
+
+#### Monitoring & Evaluation
+- [ ] **Daily**: System uptime, API response times
+- [ ] **Weekly**: User adoption, data quality
+- [ ] **Monthly**: Clinical outcomes, model accuracy
+
+### Infrastructure Requirements
+
+#### Server Specifications
+```yaml
+Production Server:
+  CPU: 4 cores
+  RAM: 8 GB
+  Storage: 100 GB SSD
+  Bandwidth: 1 TB/month
+  OS: Ubuntu 22.04 LTS
+
+Database Server:
+  PostgreSQL: 15+
+  RAM: 4 GB
+  Storage: 50 GB SSD
+  Backups: Daily automated
+
+Estimated Cost: $50-100/month
+```
+
+#### Scaling Strategy
+```
+Phase 1 (Pilot): 100 users
+  - Single server
+  - SQLite/PostgreSQL
+  - 1,000 assessments/day
+
+Phase 2 (Regional): 500 users
+  - Load balancer
+  - PostgreSQL (managed)
+  - 5,000 assessments/day
+
+Phase 3 (National): 2,000+ users
+  - Auto-scaling (2-5 servers)
+  - PostgreSQL cluster
+  - Redis cache
+  - 20,000+ assessments/day
+```
 
 ### Backup & Disaster Recovery
 
@@ -759,6 +747,11 @@ Classification Report:
 weighted avg       0.94      0.94      0.94       605
 ```
 
+**Feature Importance**:
+1. MUAC: 45.04%
+2. Appetite: 28.96%
+3. Danger Signs: 17.24%
+
 ### Model 2: Quality Classifier
 
 ```
@@ -785,6 +778,21 @@ weighted avg       0.92      0.89      0.90      1214
 
 MIT License - See [LICENSE](LICENSE) file
 
+---
+
+## 👥 Contributors
+
+- **Your Name** - Lead Developer
+- **Team Members** - Contributors
+
+---
+
+## 📞 Support
+
+For issues, questions, or contributions:
+- **Email**: support@cmam-southsudan.org
+- **GitHub Issues**: [Report Bug](https://github.com/YOUR_USERNAME/CMAM_ML_System/issues)
+- **Documentation**: [Wiki](https://github.com/YOUR_USERNAME/CMAM_ML_System/wiki)
 
 ---
 
@@ -792,6 +800,8 @@ MIT License - See [LICENSE](LICENSE) file
 
 - **Ministry of Health, South Sudan** - CMAM Guidelines 2017
 - **World Health Organization (WHO)** - LMS reference tables
+- **UNICEF** - Technical support
+- **Community Health Workers** - Field testing and feedback
 
 ---
 
