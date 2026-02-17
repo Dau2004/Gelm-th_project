@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from accounts.views import UserViewSet, FacilityViewSet
 from accounts.auth_views import CustomTokenObtainPairView
 from assessments.views import AssessmentViewSet, TreatmentRecordViewSet, ReferralViewSet
-from assessments.analytics_views import national_summary, state_trends, time_series, chw_performance, doctor_performance
+from assessments.analytics_views import national_summary, state_trends, time_series, chw_performance, doctor_performance, facility_stats
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -24,4 +24,5 @@ urlpatterns = [
     path('api/analytics/time-series/', time_series),
     path('api/analytics/chw-performance/', chw_performance),
     path('api/analytics/doctor-performance/', doctor_performance),
+    path('api/analytics/facility/<int:facility_id>/', facility_stats),
 ]

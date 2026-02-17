@@ -109,3 +109,36 @@ def doctor_performance(request):
         })
     
     return Response(performance)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def facility_stats(request, facility_id):
+    """Get facility statistics"""
+    from accounts.models import Facility, User
+    from django.db.models import Avg
+    
+    try:
+        facility = Facility.objects.get(id=facility_id)
+    except Facility.DoesNotExist:
+        return Response({'error': 'Facility not found'}, status=404)
+    
+    assessments = Assessment.objects.filter(facility_id=facility_id)
+    total = assessments.count()
+    sam = assessments.filter(clinical_status='SAM').count()
+    mam = assessments.filter(clinical_status='MAM').count()
+    healthy = assessments.filter(clinical_status='Healthy').count()
+    avg_muac = assessments.aggregate(Avg('muac_mm'))['muac_mm__avg']
+    
+    chw_count = User.objects.filter(facility_id=facility_id, role='CHW', is_active=True).count()
+    
+    return Response({
+        'facility': facility.name,
+        'state': facility.state,
+        'chw_count': chw_count,
+        'total': total,
+        'sam_count': sam,
+        'mam_count': mam,
+        'healthy_count': healthy,
+        'avg_muac': avg_muac
+    })

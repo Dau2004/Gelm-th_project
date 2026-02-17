@@ -103,8 +103,12 @@ class FacilityStatsView(APIView):
             avg_muac=Avg('muac_mm')
         )
         
+        # Count CHWs assigned to this facility
+        chw_count = User.objects.filter(facility=facility, role='CHW', is_active=True).count()
+        
         return Response({
             'facility': facility.name,
             'state': facility.state,
+            'chw_count': chw_count,
             **stats
         })
