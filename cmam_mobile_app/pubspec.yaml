@@ -15,9 +15,11 @@ dependencies:
   shared_preferences: ^2.2.2
   sqflite: ^2.3.0
   path_provider: ^2.1.1
-  intl: ^0.18.1
+  intl: ^0.20.2
   flutter_svg: ^2.0.9
   flutter_secure_storage: ^9.0.0
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:

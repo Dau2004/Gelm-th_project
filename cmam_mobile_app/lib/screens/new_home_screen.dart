@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (username == null || username.isEmpty) return;
     
     final assessments = await DatabaseService.instance.getAssessmentsByUsername(username);
-    final referrals = await DatabaseService.instance.getAllReferrals();
+    final referrals = await DatabaseService.instance.getReferralsByUsername(username);
     
     setState(() {
       _totalAssessments = assessments.length;

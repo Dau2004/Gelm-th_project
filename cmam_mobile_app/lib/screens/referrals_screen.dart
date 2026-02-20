@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import '../models/referral.dart';
 import '../models/child_assessment.dart';
 import '../services/database_service.dart';
+import '../services/auth_service.dart';
 
 class ReferralsScreen extends StatefulWidget {
   const ReferralsScreen({super.key});
@@ -23,8 +24,20 @@ class _ReferralsScreenState extends State<ReferralsScreen> {
   }
 
   Future<void> _loadData() async {
-    final referrals = await DatabaseService.instance.getAllReferrals();
-    final assessments = await DatabaseService.instance.getAllAssessments();
+    final user = await AuthService.getCurrentUser();
+    if (user == null) {
+      setState(() => _isLoading = false);
+      return;
+    }
+    
+    final username = user['username'];
+    if (username == null || username.isEmpty) {
+      setState(() => _isLoading = false);
+      return;
+    }
+    
+    final referrals = await DatabaseService.instance.getReferralsByUsername(username);
+    final assessments = await DatabaseService.instance.getAssessmentsByUsername(username);
     
     final assessmentMap = <String, ChildAssessment>{};
     for (var assessment in assessments) {

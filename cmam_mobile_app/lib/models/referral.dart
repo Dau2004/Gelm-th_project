@@ -7,6 +7,7 @@ class Referral {
   final String? notes;
   final DateTime timestamp;
   final bool synced;
+  final String? chwUsername;
 
   Referral({
     this.id,
@@ -17,6 +18,7 @@ class Referral {
     this.notes,
     DateTime? timestamp,
     this.synced = false,
+    this.chwUsername,
   }) : timestamp = timestamp ?? DateTime.now();
 
   Map<String, dynamic> toMap() {
@@ -29,6 +31,7 @@ class Referral {
       'notes': notes,
       'timestamp': timestamp.toIso8601String(),
       'synced': synced ? 1 : 0,
+      'chw_username': chwUsername,
     };
   }
 
@@ -51,6 +54,7 @@ class Referral {
       notes: map['notes'],
       timestamp: DateTime.parse(map['timestamp']),
       synced: map['synced'] == 1,
+      chwUsername: map['chw_username'],
     );
   }
 }

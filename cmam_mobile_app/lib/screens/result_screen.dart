@@ -3,6 +3,7 @@ import '../models/child_assessment.dart';
 import '../services/prediction_service.dart';
 import '../services/database_service.dart';
 import '../services/api_service.dart';
+import '../services/auth_service.dart';
 import '../models/referral.dart';
 import 'doctor_selection_screen.dart';
 
@@ -290,11 +291,13 @@ class _ResultScreenState extends State<ResultScreen> {
             ),
           );
         } else if (pathway != 'None') {
+          final user = await AuthService.getCurrentUser();
           final referral = Referral(
             assessmentId: widget.assessment.id ?? '',
             childId: widget.assessment.childId,
             pathway: pathway,
             notes: widget.reasoning,
+            chwUsername: user?['username'],
           );
           await DatabaseService.instance.createReferral(referral);
           

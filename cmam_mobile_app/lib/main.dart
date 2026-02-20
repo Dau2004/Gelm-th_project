@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
 import 'screens/new_home_screen.dart';
 import 'screens/assessment_screen.dart';
@@ -9,6 +11,8 @@ import 'screens/profile_screen.dart';
 import 'screens/settings_screen.dart';
 import 'services/database_service.dart';
 import 'services/auth_service.dart';
+import 'services/locale_provider.dart';
+import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,9 +47,30 @@ class _CMAMAppState extends State<CMAMApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Gelmäth - CMAM Care Pathway',
-      debugShowCheckedModeBanner: false,
+    return ChangeNotifierProvider(
+      create: (_) => LocaleProvider(),
+      child: Consumer<LocaleProvider>(
+        builder: (context, localeProvider, child) {
+          return MaterialApp(
+            title: 'Gelmäth - CMAM Care Pathway',
+            debugShowCheckedModeBanner: false,
+            locale: localeProvider.locale,
+            supportedLocales: const [Locale('en'), Locale('ar')],
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            localeResolutionCallback: (locale, supportedLocales) {
+              if (locale != null) {
+                for (var supportedLocale in supportedLocales) {
+                  if (supportedLocale.languageCode == locale.languageCode) {
+                    return supportedLocale;
+                  }
+                }
+              }
+              return supportedLocales.first;
+            },
       theme: ThemeData(
         brightness: _isDarkMode ? Brightness.dark : Brightness.light,
         primaryColor: const Color(0xFF0E4D34),
@@ -113,17 +138,20 @@ class _CMAMAppState extends State<CMAMApp> {
           ),
         ),
       ),
-      home: SettingsProvider(
-        onSettingsChanged: _loadSettings,
-        child: const AuthCheck(),
+            home: SettingsProvider(
+              onSettingsChanged: _loadSettings,
+              child: const AuthCheck(),
+            ),
+            routes: {
+              '/login': (context) => const LoginScreen(),
+              '/main': (context) => const MainScreen(),
+              '/assessment': (context) => const AssessmentScreen(),
+              '/referrals': (context) => const ReferralsScreen(),
+              '/settings': (context) => const SettingsScreen(),
+            },
+          );
+        },
       ),
-      routes: {
-        '/login': (context) => const LoginScreen(),
-        '/main': (context) => const MainScreen(),
-        '/assessment': (context) => const AssessmentScreen(),
-        '/referrals': (context) => const ReferralsScreen(),
-        '/settings': (context) => const SettingsScreen(),
-      },
     );
   }
 }
@@ -174,6 +202,9 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Provider.of<LocaleProvider>(context).locale;
+    final l10n = AppLocalizations(locale.languageCode);
+    
     return Scaffold(
       appBar: _currentIndex == 0
           ? AppBar(
@@ -186,17 +217,17 @@ class _MainScreenState extends State<MainScreen> {
                     final confirm = await showDialog<bool>(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text('Logout'),
-                        content: const Text('Are you sure you want to logout?'),
+                        title: Text(l10n.translate('logout')),
+                        content: Text(l10n.translate('logout_confirm')),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context, false),
-                            child: const Text('Cancel'),
+                            child: Text(l10n.translate('cancel')),
                           ),
                           ElevatedButton(
                             onPressed: () => Navigator.pop(context, true),
                             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                            child: const Text('Logout'),
+                            child: Text(l10n.translate('logout')),
                           ),
                         ],
                       ),
@@ -219,26 +250,26 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) => setState(() => _currentIndex = index),
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: const Icon(Icons.home),
+            label: l10n.translate('home'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline),
-            label: 'New',
+            icon: const Icon(Icons.add_circle_outline),
+            label: l10n.translate('new'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'History',
+            icon: const Icon(Icons.history),
+            label: l10n.translate('history'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.local_hospital),
-            label: 'Referrals',
+            icon: const Icon(Icons.local_hospital),
+            label: l10n.translate('referrals'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+            icon: const Icon(Icons.settings),
+            label: l10n.translate('settings'),
           ),
         ],
       ),
@@ -246,15 +277,17 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   String _getTitle() {
+    final locale = Provider.of<LocaleProvider>(context, listen: false).locale;
+    final l10n = AppLocalizations(locale.languageCode);
     switch (_currentIndex) {
       case 1:
-        return 'New Assessment';
+        return l10n.translate('new_assessment');
       case 2:
-        return 'Assessment History';
+        return l10n.translate('assessment_history');
       case 3:
-        return 'Referrals';
+        return l10n.translate('referrals');
       case 4:
-        return 'Settings';
+        return l10n.translate('settings');
       default:
         return 'Gelmäth';
     }

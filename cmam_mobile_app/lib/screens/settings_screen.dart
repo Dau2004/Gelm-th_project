@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import '../main.dart';
 import '../services/auth_service.dart';
 import '../services/sync_service.dart';
+import '../services/locale_provider.dart';
+import '../l10n/app_localizations.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -121,6 +124,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Provider.of<LocaleProvider>(context).locale;
+    final l10n = AppLocalizations(locale.languageCode);
+    
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
@@ -191,6 +197,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
+                ),
+              ),
+              const Divider(height: 1),
+              ListTile(
+                title: Text(l10n.translate('language')),
+                subtitle: Text(locale.languageCode == 'ar' ? 'العربية' : 'English'),
+                trailing: DropdownButton<String>(
+                  value: locale.languageCode,
+                  items: const [
+                    DropdownMenuItem(value: 'en', child: Text('English')),
+                    DropdownMenuItem(value: 'ar', child: Text('العربية')),
+                  ],
+                  onChanged: (code) {
+                    if (code != null) {
+                      Provider.of<LocaleProvider>(context, listen: false).setLocale(code);
+                    }
+                  },
                 ),
               ),
             ],

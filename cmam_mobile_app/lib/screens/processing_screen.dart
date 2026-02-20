@@ -154,6 +154,7 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
         status: 'pending',
         notes: 'URGENT: SAM with complications - requires immediate stabilization centre admission',
         timestamp: DateTime.now(),
+        chwUsername: (await AuthService.getCurrentUser())?['username'],
       );
       await DatabaseService.instance.createReferral(referral);
     }

@@ -21,7 +21,7 @@ class DatabaseService {
 
     return await openDatabase(
       path,
-      version: 5,
+      version: 6,
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -60,6 +60,11 @@ class DatabaseService {
     if (oldVersion < 5) {
       try {
         await db.execute('ALTER TABLE assessments ADD COLUMN chw_username TEXT');
+      } catch (e) {}
+    }
+    if (oldVersion < 6) {
+      try {
+        await db.execute('ALTER TABLE referrals ADD COLUMN chw_username TEXT');
       } catch (e) {}
     }
   }
@@ -101,7 +106,8 @@ class DatabaseService {
         status TEXT NOT NULL DEFAULT 'pending',
         notes TEXT,
         timestamp TEXT NOT NULL,
-        synced INTEGER NOT NULL DEFAULT 0
+        synced INTEGER NOT NULL DEFAULT 0,
+        chw_username TEXT
       )
     ''');
   }
@@ -211,6 +217,17 @@ class DatabaseService {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  Future<List<Referral>> getReferralsByUsername(String username) async {
+    final db = await instance.database;
+    final result = await db.query(
+      'referrals',
+      where: 'chw_username = ?',
+      whereArgs: [username],
+      orderBy: 'timestamp DESC',
+    );
+    return result.map((map) => Referral.fromMap(map)).toList();
   }
 
   Future<int> updateReferralStatus(String id, String status) async {
