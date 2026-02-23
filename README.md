@@ -383,7 +383,7 @@ jupyter notebook
 - Quick access to assessment form
 
 #### 2. **Assessment Form**
-![Assessment Form](Screenshots/mobile_assessment.png)
+![Assessment Form](Screenshot/Assessment_mobileapp.png)
 - **Input Fields**:
   - Child ID
   - Sex (M/F)
@@ -396,7 +396,7 @@ jupyter notebook
 - **Offline Capability**
 
 #### 3. **Results Screen**
-![Results Screen](Screenshots/mobile_results.png)
+![Results Screen](Screenshot/result_mobileapp.png)
 - **Clinical Status**: SAM/MAM/Healthy
 - **Care Pathway**: SC-ITP/OTP/TSFP
 - **Confidence Score**: 0-100%
@@ -404,7 +404,7 @@ jupyter notebook
 - **Action Buttons**: Save, Share, Print
 
 #### 4. **History Screen**
-![History](Screenshots/mobile_history.png)
+![History](Screenshot/History_mobileapp.png)
 - Past assessments list
 - Sync status indicator
 - Search and filter options
@@ -412,21 +412,20 @@ jupyter notebook
 ### Web Dashboard
 
 #### 1. **National Summary**
-![Dashboard](Screenshots/web_dashboard.png)
+![Dashboard](Screenshot/MoH_Overview.png)
 - Total assessments
 - SAM/MAM/Healthy distribution
 - Trend charts (Recharts)
 - Geographic map (Leaflet)
 
-#### 2. **Facility Analytics**
-![Facility](Screenshots/web_facility.png)
-- Facility-level statistics
-- Performance indicators
-- Case distribution
-- Export to PDF/Excel
+#### 2. **Analytics**
+![Facility](Screenshot/MoH_analytics.png)
+- Monthly Trend
+- Ages Group Distribution
+- Gender distribution
 
 #### 3. **User Management**
-![Users](Screenshots/web_users.png)
+![Users](Screenshot/MoH_Usersmanagement.png)
 - CHW accounts
 - Role-based access
 - Activity logs
