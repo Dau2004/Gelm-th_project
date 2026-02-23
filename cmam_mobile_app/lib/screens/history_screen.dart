@@ -240,13 +240,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  '${l10n.translate('muac_zscore')}: ${assessment.muacZScore?.toStringAsFixed(2) ?? 'N/A'}',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14,
+                Flexible(
+                  child: Text(
+                    '${l10n.translate('muac_zscore')}: ${assessment.muacZScore?.toStringAsFixed(2) ?? 'N/A'}',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 14,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                const SizedBox(width: 8),
                 Text(
                   assessment.clinicalStatus ?? l10n.translate('unknown'),
                   style: const TextStyle(
