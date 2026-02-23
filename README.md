@@ -1,4 +1,4 @@
-# 🏥 CMAM ML System - Community-based Management of Acute Malnutrition
+# CMAM ML System - Community-based Management of Acute Malnutrition
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
@@ -25,7 +25,7 @@
 
 ---
 
-## 📖 Description
+## Description
 
 The **Gelmëth System** is a comprehensive machine learning solution for screening and managing acute malnutrition in children aged 6-59 months. Built on the **Community Management of Acute Malnutrition (CMAM) guidelines from South Sudan 2017**, this system combines:
 
@@ -34,7 +34,7 @@ The **Gelmëth System** is a comprehensive machine learning solution for screeni
 - **Offline-First Architecture**: Works in remote areas without internet connectivity
 - **WHO Compliance**: Uses official WHO LMS tables for Z-score calculation
 
-### 🎯 Problem Statement
+### Problem Statement
 
 Malnutrition affects millions of children in developing countries. Community Health Workers (CHWs) need:
 - Quick, accurate screening tools
@@ -42,7 +42,7 @@ Malnutrition affects millions of children in developing countries. Community Hea
 - Evidence-based care pathway recommendations
 - Quality control for measurements
 
-### 💡 Solution
+### Solution
 
 Our system provides:
 1. **Real-time ML predictions** for care pathways (SC-ITP, OTP, TSFP)
@@ -75,37 +75,37 @@ CMAM_ML_System/
 
 ---
 
-## ✨ Features
+## Features
 
-### 🤖 Machine Learning
-- ✅ **Model 1**: Care pathway classifier (SAM/MAM/Healthy → SC-ITP/OTP/TSFP)
-- ✅ **Model 2**: Quality checker (detects measurement errors)
-- ✅ Random Forest ensemble (100 trees, depth 10)
-- ✅ 94% accuracy on pathway classification
-- ✅ 89% accuracy on quality detection
+### Machine Learning
+- **Model 1**: Care pathway classifier (SAM/MAM/Healthy → SC-ITP/OTP/TSFP)
+- **Model 2**: Quality checker (detects measurement errors)
+- Random Forest ensemble (100 trees, depth 10)
+- 94% accuracy on pathway classification
+- 89% accuracy on quality detection
 
-### 📱 Mobile App (Flutter)
-- ✅ Offline-first with SQLite
-- ✅ Real-time ML predictions
-- ✅ WHO Z-score calculation
-- ✅ CMAM guideline validation
-- ✅ Auto-sync when online
-- ✅ Modern UI (dark green theme)
+###  Mobile App (Flutter)
+- Offline-first with SQLite
+- Real-time ML predictions
+- WHO Z-score calculation
+- CMAM guideline validation
+- Auto-sync when online
+- Modern UI (dark green theme)
 
-### 🌐 Web Dashboard (React)
-- ✅ MoH analytics dashboard
-- ✅ Interactive visualizations (Recharts)
-- ✅ Geographic mapping (Leaflet)
-- ✅ PDF report generation
-- ✅ User management
-- ✅ Responsive design
+###  Web Dashboard (React)
+- MoH analytics dashboard
+- Interactive visualizations (Recharts)
+- Geographic mapping (Leaflet)
+- PDF report generation
+- User management
+- Responsive design
 
 ### 🔌 REST API (Django)
-- ✅ RESTful endpoints
-- ✅ JWT authentication
-- ✅ Model integration
-- ✅ Swagger documentation
-- ✅ PostgreSQL/SQLite support
+- RESTful endpoints
+- JWT authentication
+- Model integration
+- Swagger documentation
+- PostgreSQL/SQLite support
 
 ---
 
@@ -190,10 +190,10 @@ The official CMAM South Sudan 2017 guidelines prioritize:
 - **Danger signs** (clinical checklist)
 
 **Conclusion**: We focused on **structured clinical data** (MUAC, age, edema grade, appetite, danger signs) which:
-- ✅ Aligns with CMAM protocols
-- ✅ Works offline without image processing
-- ✅ Provides consistent, reliable measurements
-- ✅ Achieves 94% accuracy without images
+- Aligns with CMAM protocols
+- Works offline without image processing
+- Provides consistent, reliable measurements
+- Achieves 94% accuracy without images
 
 ---
 
@@ -372,18 +372,18 @@ jupyter notebook
 
 ---
 
-## 🎨 Designs & Screenshots
+## Designs & Screenshots
 
 ### Mobile App Interface
 
 #### 1. **Home Screen**
-![Home Screen](docs/screenshots/mobile_home.png)
+![Home Screen](Screenshot/Home_mobileapp.png)
 - Clean, intuitive navigation
 - Dark green (#2D5F3F) primary color
 - Quick access to assessment form
 
 #### 2. **Assessment Form**
-![Assessment Form](docs/screenshots/mobile_assessment.png)
+![Assessment Form](Screenshots/mobile_assessment.png)
 - **Input Fields**:
   - Child ID
   - Sex (M/F)
@@ -396,7 +396,7 @@ jupyter notebook
 - **Offline Capability**
 
 #### 3. **Results Screen**
-![Results Screen](docs/screenshots/mobile_results.png)
+![Results Screen](Screenshots/mobile_results.png)
 - **Clinical Status**: SAM/MAM/Healthy
 - **Care Pathway**: SC-ITP/OTP/TSFP
 - **Confidence Score**: 0-100%
@@ -404,7 +404,7 @@ jupyter notebook
 - **Action Buttons**: Save, Share, Print
 
 #### 4. **History Screen**
-![History](docs/screenshots/mobile_history.png)
+![History](Screenshots/mobile_history.png)
 - Past assessments list
 - Sync status indicator
 - Search and filter options
@@ -412,21 +412,21 @@ jupyter notebook
 ### Web Dashboard
 
 #### 1. **National Summary**
-![Dashboard](docs/screenshots/web_dashboard.png)
+![Dashboard](Screenshots/web_dashboard.png)
 - Total assessments
 - SAM/MAM/Healthy distribution
 - Trend charts (Recharts)
 - Geographic map (Leaflet)
 
 #### 2. **Facility Analytics**
-![Facility](docs/screenshots/web_facility.png)
+![Facility](Screenshots/web_facility.png)
 - Facility-level statistics
 - Performance indicators
 - Case distribution
 - Export to PDF/Excel
 
 #### 3. **User Management**
-![Users](docs/screenshots/web_users.png)
+![Users](Screenshots/web_users.png)
 - CHW accounts
 - Role-based access
 - Activity logs
@@ -478,18 +478,18 @@ Signs      Model 1              Dashboard                                   CHW 
 
 ---
 
-## 🚀 Deployment Plan
+## Deployment Plan
 
-### Phase 1: Pilot Deployment (Month 1-2)
+### Phase 1: Deployment
 
-#### Week 1-2: Infrastructure Setup
+#### Week 5-6: Infrastructure Setup
 - [ ] **Cloud Server**: AWS EC2 (t3.medium) or DigitalOcean Droplet
 - [ ] **Database**: PostgreSQL 15+ (managed service)
 - [ ] **Storage**: S3 for backups
 - [ ] **Domain**: Register domain (e.g., cmam-southsudan.org)
 - [ ] **SSL**: Let's Encrypt certificates
 
-#### Week 3-4: Backend Deployment
+#### Week 5-6: Backend Deployment
 ```bash
 # Production server setup
 sudo apt update && sudo apt upgrade -y
@@ -549,118 +549,10 @@ sudo cp -r build/* /var/www/cmam/dashboard/
   flutter build appbundle --release
   # Upload to Play Console
   ```
-- [ ] **iOS**: Publish to App Store
-  ```bash
-  flutter build ios --release
-  # Submit via Xcode
-  ```
 - [ ] **Alternative**: APK direct distribution for pilot
 
-### Phase 2: Training & Rollout (Month 3-4)
 
-#### CHW Training Program
-- [ ] **Week 1**: Train 20 CHWs in pilot district
-- [ ] **Week 2**: Field testing with supervision
-- [ ] **Week 3**: Feedback collection and bug fixes
-- [ ] **Week 4**: Expand to 50 CHWs
 
-#### Training Materials
-- [ ] User manual (English/Arabic)
-- [ ] Video tutorials
-- [ ] Quick reference cards
-- [ ] Troubleshooting guide
-
-### Phase 3: Scale-Up (Month 5-6)
-
-#### National Rollout
-- [ ] Deploy to all 10 states
-- [ ] Train 500+ CHWs
-- [ ] Establish helpdesk
-- [ ] Monitor system performance
-
-#### Monitoring & Evaluation
-- [ ] **Daily**: System uptime, API response times
-- [ ] **Weekly**: User adoption, data quality
-- [ ] **Monthly**: Clinical outcomes, model accuracy
-
-### Infrastructure Requirements
-
-#### Server Specifications
-```yaml
-Production Server:
-  CPU: 4 cores
-  RAM: 8 GB
-  Storage: 100 GB SSD
-  Bandwidth: 1 TB/month
-  OS: Ubuntu 22.04 LTS
-
-Database Server:
-  PostgreSQL: 15+
-  RAM: 4 GB
-  Storage: 50 GB SSD
-  Backups: Daily automated
-
-Estimated Cost: $50-100/month
-```
-
-#### Scaling Strategy
-```
-Phase 1 (Pilot): 100 users
-  - Single server
-  - SQLite/PostgreSQL
-  - 1,000 assessments/day
-
-Phase 2 (Regional): 500 users
-  - Load balancer
-  - PostgreSQL (managed)
-  - 5,000 assessments/day
-
-Phase 3 (National): 2,000+ users
-  - Auto-scaling (2-5 servers)
-  - PostgreSQL cluster
-  - Redis cache
-  - 20,000+ assessments/day
-```
-
-### Backup & Disaster Recovery
-
-```bash
-# Daily database backups
-0 2 * * * pg_dump cmam_db > /backups/cmam_$(date +\%Y\%m\%d).sql
-
-# Weekly full system backup
-0 3 * * 0 tar -czf /backups/system_$(date +\%Y\%m\%d).tar.gz /var/www/cmam
-
-# Upload to S3
-aws s3 sync /backups/ s3://cmam-backups/
-```
-
-### Security Measures
-
-- [ ] **HTTPS**: SSL/TLS encryption
-- [ ] **Authentication**: JWT tokens (24h expiry)
-- [ ] **Authorization**: Role-based access control
-- [ ] **Data Encryption**: AES-256 for sensitive data
-- [ ] **Audit Logs**: Track all data access
-- [ ] **Rate Limiting**: Prevent API abuse
-- [ ] **Firewall**: UFW/iptables rules
-
-### Maintenance Plan
-
-#### Daily
-- Monitor server health
-- Check error logs
-- Verify backups
-
-#### Weekly
-- Review user feedback
-- Update documentation
-- Security patches
-
-#### Monthly
-- Model retraining (if needed)
-- Performance optimization
-- Feature updates
 
 ---
 
@@ -780,28 +672,10 @@ MIT License - See [LICENSE](LICENSE) file
 
 ---
 
-## 👥 Contributors
-
-- **Your Name** - Lead Developer
-- **Team Members** - Contributors
-
----
-
-## 📞 Support
-
-For issues, questions, or contributions:
-- **Email**: support@cmam-southsudan.org
-- **GitHub Issues**: [Report Bug](https://github.com/YOUR_USERNAME/CMAM_ML_System/issues)
-- **Documentation**: [Wiki](https://github.com/YOUR_USERNAME/CMAM_ML_System/wiki)
-
----
-
 ## 🙏 Acknowledgments
 
 - **Ministry of Health, South Sudan** - CMAM Guidelines 2017
 - **World Health Organization (WHO)** - LMS reference tables
-- **UNICEF** - Technical support
-- **Community Health Workers** - Field testing and feedback
 
 ---
 
