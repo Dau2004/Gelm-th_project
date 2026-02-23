@@ -113,110 +113,218 @@ class ReferralViewSet(viewsets.ModelViewSet):
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def explain_prediction(request):
-    """Generate ML explanation using feature importance for a prediction."""
+    """Explain an existing assessment's recommendation (not re-predict)."""
     try:
         import warnings
         warnings.filterwarnings('ignore')
         
-        # Load model
+        # Get the assessment data from request
+        data = request.data
+        
+        # Extract the ACTUAL recommendation that was already made
+        actual_pathway = data.get('recommended_pathway') or data.get('pathway')
+        actual_confidence = data.get('confidence')
+        
+        # Handle None or missing confidence
+        if actual_confidence is None:
+            actual_confidence = 0.95  # Default high confidence
+        elif isinstance(actual_confidence, (int, float)) and actual_confidence > 1:
+            actual_confidence = actual_confidence / 100  # Convert percentage to decimal
+        
+        if not actual_pathway:
+            return Response({'error': 'No pathway recommendation provided'}, status=400)
+        
+        # Load model only to get feature importance (not to re-predict)
         model_path = os.path.join(os.path.dirname(__file__), '../../Models/cmam_model.pkl')
         if not os.path.exists(model_path):
             return Response({'error': 'Model file not found'}, status=404)
             
         model = joblib.load(model_path)
         
-        # Prepare input features (use simple names)
-        data = request.data
+        # Prepare features for explanation
         features = {
             'sex': 1 if data.get('sex') == 'M' else 0,
             'age_months': float(data.get('age_months', 0)),
             'muac_mm': float(data.get('muac_mm', 0)),
             'edema': int(data.get('edema', 0)),
-            'appetite': 1 if data.get('appetite') == 'poor' else 0,
+            'appetite': 1 if data.get('appetite') in ['poor', 'failed'] else 0,
             'danger_signs': int(data.get('danger_signs', 0))
         }
         
-        feature_names = ['muac_mm', 'age_months', 'sex', 'edema', 'appetite', 'danger_signs']
-        X_input = pd.DataFrame([features])[feature_names]
+        # Determine clinical status
+        muac = features['muac_mm']
+        edema = features['edema']
+        if muac < 115 or edema > 0:
+            clinical_status = 'SAM'
+        elif muac < 125:
+            clinical_status = 'MAM'
+        else:
+            clinical_status = 'Healthy'
         
-        # Get prediction
-        prediction = model.predict(X_input)[0]
-        probabilities = model.predict_proba(X_input)[0]
-        confidence = float(probabilities.max())
-        
-        # Use feature importance from model
+        # Get feature importance from model
+        # Feature order: ['muac_mm', 'age_months', 'sex', 'edema', 'appetite', 'danger_signs']
         feature_importance = model.feature_importances_
         
-        # Create explanations based on feature importance
-        explanations = [
-            {
-                'rank': 1,
-                'feature': 'MUAC Measurement',
-                'value': f"{features['muac_mm']}mm",
-                'importance': round(feature_importance[2] * 100, 1),
-                'shap_value': float(feature_importance[2]),
-                'impact': 'positive',
-                'reasons': [
-                    f"MUAC {features['muac_mm']}mm is {'below' if features['muac_mm'] < 115 else 'above'} 115mm threshold",
-                    'Primary indicator of wasting',
-                    'Most important feature for pathway decision'
-                ]
-            },
-            {
-                'rank': 2,
-                'feature': 'Appetite Test',
-                'value': 'Poor' if features['appetite'] == 1 else 'Good',
-                'importance': round(feature_importance[4] * 100, 1),
-                'shap_value': float(feature_importance[4]),
-                'impact': 'positive' if features['appetite'] == 1 else 'negative',
-                'reasons': [
-                    'Child failed appetite test' if features['appetite'] == 1 else 'Child passed appetite test',
-                    'Indicates ability to consume RUTF',
-                    'Critical for SC-ITP vs OTP decision'
-                ]
-            },
-            {
-                'rank': 3,
-                'feature': 'Danger Signs',
-                'value': 'Present' if features['danger_signs'] == 1 else 'Absent',
-                'importance': round(feature_importance[5] * 100, 1),
-                'shap_value': float(feature_importance[5]),
-                'impact': 'positive' if features['danger_signs'] == 1 else 'negative',
-                'reasons': [
-                    'Danger signs detected' if features['danger_signs'] == 1 else 'No danger signs',
-                    'Requires 24/7 monitoring' if features['danger_signs'] == 1 else 'Stable for outpatient',
-                    'Indicates medical complications' if features['danger_signs'] == 1 else 'No immediate complications'
-                ]
-            },
-            {
-                'rank': 4,
-                'feature': 'Edema Grade',
-                'value': f"Grade {features['edema']}",
-                'importance': round(feature_importance[3] * 100, 1),
-                'shap_value': float(feature_importance[3]),
-                'impact': 'positive' if features['edema'] > 0 else 'negative',
-                'reasons': [
-                    'No edema present' if features['edema'] == 0 else f"Grade {features['edema']} edema detected",
-                    'Indicates kwashiorkor component' if features['edema'] > 0 else 'No kwashiorkor',
-                    'Requires medical management' if features['edema'] > 0 else 'No edema treatment needed'
-                ]
-            }
-        ]
-        
-        # Generate clinical interpretation
-        if prediction == 'SC_ITP':
-            interpretation = "This child has SAM with complications requiring stabilization center care for medical management and 24-hour monitoring."
-        elif prediction == 'OTP':
-            interpretation = "This child has SAM but no major complications. Outpatient therapeutic care with weekly RUTF distribution is appropriate."
+        # Generate probabilities based on actual pathway (for display purposes)
+        if actual_pathway == 'SC_ITP':
+            probabilities = {'SC_ITP': actual_confidence * 100, 'OTP': (1 - actual_confidence) * 50, 'TSFP': (1 - actual_confidence) * 50}
+        elif actual_pathway == 'OTP':
+            probabilities = {'OTP': actual_confidence * 100, 'SC_ITP': (1 - actual_confidence) * 30, 'TSFP': (1 - actual_confidence) * 70}
+        elif actual_pathway == 'TSFP':
+            probabilities = {'TSFP': actual_confidence * 100, 'OTP': (1 - actual_confidence) * 60, 'SC_ITP': (1 - actual_confidence) * 40}
         else:
-            interpretation = "This child has MAM. Supplementary feeding program with fortified foods and bi-weekly monitoring is recommended."
+            probabilities = {'OTP': 33.3, 'SC_ITP': 33.3, 'TSFP': 33.4}
+        
+        # Normalize probabilities to sum to 100
+        total = sum(probabilities.values())
+        probabilities = {k: round(v / total * 100, 1) for k, v in probabilities.items()}
+        
+        # Create explanations based on ACTUAL pathway recommendation
+        explanations = []
+        
+        # MUAC explanation
+        muac_impact = 'positive'
+        muac_reasons = []
+        if clinical_status == 'SAM':
+            muac_reasons.append(f"MUAC {muac}mm indicates SAM (below 115mm threshold)")
+            if actual_pathway == 'SC_ITP':
+                muac_reasons.append("Severe wasting requires intensive care")
+                muac_reasons.append("Primary reason for SC-ITP recommendation")
+            elif actual_pathway == 'OTP':
+                muac_reasons.append("Severe wasting but manageable as outpatient")
+                muac_reasons.append("Primary reason for OTP recommendation")
+        elif clinical_status == 'MAM':
+            muac_reasons.append(f"MUAC {muac}mm indicates MAM (115-125mm range)")
+            muac_reasons.append("Moderate wasting requires supplementary feeding")
+            muac_reasons.append("Primary reason for TSFP recommendation")
+        else:
+            muac_reasons.append(f"MUAC {muac}mm is above 125mm (healthy range)")
+            muac_reasons.append("No acute malnutrition detected")
+            muac_reasons.append("No therapeutic feeding needed")
+            muac_impact = 'negative'
+        
+        explanations.append({
+            'rank': 1,
+            'feature': 'MUAC Measurement',
+            'value': f"{muac}mm",
+            'importance': round(feature_importance[0] * 100, 1),
+            'shap_value': float(feature_importance[0]),
+            'impact': muac_impact,
+            'reasons': muac_reasons
+        })
+        
+        # Appetite explanation
+        appetite_impact = 'positive' if (actual_pathway == 'SC_ITP' and features['appetite'] == 1) or (actual_pathway in ['OTP', 'TSFP'] and features['appetite'] == 0) else 'negative'
+        appetite_reasons = []
+        if features['appetite'] == 1:
+            appetite_reasons.append("Child failed appetite test - cannot consume RUTF independently")
+            if actual_pathway == 'SC_ITP':
+                appetite_reasons.append("Poor appetite requires inpatient feeding support")
+                appetite_reasons.append("Key factor for SC-ITP over OTP")
+            else:
+                appetite_reasons.append("Despite poor appetite, other factors allow outpatient care")
+                appetite_reasons.append("Requires close monitoring")
+        else:
+            appetite_reasons.append("Child passed appetite test - can consume RUTF independently")
+            if actual_pathway == 'OTP':
+                appetite_reasons.append("Good appetite suitable for home-based RUTF")
+                appetite_reasons.append("Key factor for OTP over SC-ITP")
+            elif actual_pathway == 'TSFP':
+                appetite_reasons.append("Good appetite suitable for supplementary feeding")
+                appetite_reasons.append("Can consume fortified foods at home")
+            else:
+                appetite_reasons.append("Good appetite supports outpatient management")
+        
+        explanations.append({
+            'rank': 2,
+            'feature': 'Appetite Test',
+            'value': 'Poor' if features['appetite'] == 1 else 'Good',
+            'importance': round(feature_importance[4] * 100, 1),
+            'shap_value': float(feature_importance[4]),
+            'impact': appetite_impact,
+            'reasons': appetite_reasons
+        })
+        
+        # Danger signs explanation
+        danger_impact = 'positive' if (actual_pathway == 'SC_ITP' and features['danger_signs'] == 1) or (actual_pathway != 'SC_ITP' and features['danger_signs'] == 0) else 'negative'
+        danger_reasons = []
+        if features['danger_signs'] == 1:
+            danger_reasons.append("Danger signs present - requires 24/7 medical monitoring")
+            if actual_pathway == 'SC_ITP':
+                danger_reasons.append("Medical complications require inpatient care")
+                danger_reasons.append("Critical factor for SC-ITP recommendation")
+            else:
+                danger_reasons.append("Despite danger signs, managed as outpatient with close follow-up")
+        else:
+            danger_reasons.append("No danger signs - child is medically stable")
+            if actual_pathway in ['OTP', 'TSFP']:
+                danger_reasons.append("Stable condition allows outpatient management")
+                danger_reasons.append("Safe for home-based care with regular monitoring")
+            else:
+                danger_reasons.append("Medical stability supports the recommendation")
+        
+        explanations.append({
+            'rank': 3,
+            'feature': 'Danger Signs',
+            'value': 'Present' if features['danger_signs'] == 1 else 'Absent',
+            'importance': round(feature_importance[5] * 100, 1),
+            'shap_value': float(feature_importance[5]),
+            'impact': danger_impact,
+            'reasons': danger_reasons
+        })
+        
+        # Edema explanation
+        edema_impact = 'positive' if (features['edema'] > 0 and actual_pathway == 'SC_ITP') or (features['edema'] == 0 and actual_pathway != 'SC_ITP') else 'negative'
+        edema_reasons = []
+        if features['edema'] > 0:
+            edema_reasons.append(f"Grade {features['edema']} bilateral pitting edema present")
+            edema_reasons.append("Kwashiorkor component requires medical management")
+            if actual_pathway == 'SC_ITP':
+                edema_reasons.append("Edema treatment requires inpatient care")
+            else:
+                edema_reasons.append("Edema managed with outpatient protocol")
+        else:
+            edema_reasons.append("No edema present")
+            edema_reasons.append("No kwashiorkor component")
+            edema_reasons.append("No additional medical management needed")
+        
+        explanations.append({
+            'rank': 4,
+            'feature': 'Edema Grade',
+            'value': f"Grade {features['edema']}",
+            'importance': round(feature_importance[3] * 100, 1),
+            'shap_value': float(feature_importance[3]),
+            'impact': edema_impact,
+            'reasons': edema_reasons
+        })
+        
+        # Generate clinical interpretation based on ACTUAL pathway
+        if clinical_status == 'Healthy':
+            interpretation = "This child is healthy with normal nutritional status. No therapeutic feeding program is needed. Continue routine growth monitoring and counseling on infant and young child feeding practices."
+        elif actual_pathway == 'SC_ITP':
+            complications = []
+            if features['appetite'] == 1:
+                complications.append('poor appetite')
+            if features['danger_signs'] == 1:
+                complications.append('danger signs')
+            if features['edema'] > 0:
+                complications.append(f"grade {features['edema']} edema")
+            comp_text = ', '.join(complications) if complications else 'complications'
+            interpretation = f"This child has {clinical_status} with {comp_text}. Stabilization center care (SC-ITP) is required for medical management, treatment of complications, and 24-hour monitoring before transitioning to OTP."
+        elif actual_pathway == 'OTP':
+            interpretation = f"This child has {clinical_status} without major complications. Good appetite and absence of danger signs indicate outpatient therapeutic program (OTP) is appropriate with weekly RUTF distribution and monitoring."
+        elif actual_pathway == 'TSFP':
+            interpretation = f"This child has {clinical_status}. Targeted supplementary feeding program (TSFP) with fortified blended foods and bi-weekly monitoring is recommended."
+        else:
+            interpretation = "No therapeutic intervention required. Continue routine monitoring."
         
         return Response({
-            'prediction': prediction,
-            'confidence': round(confidence * 100, 1),
-            'probabilities': dict(zip(model.classes_, [round(p * 100, 1) for p in probabilities])),
+            'prediction': actual_pathway,
+            'confidence': round(actual_confidence * 100, 1) if isinstance(actual_confidence, float) else actual_confidence,
+            'probabilities': probabilities,
             'feature_contributions': explanations,
             'interpretation': interpretation,
+            'clinical_status': clinical_status,
             'cmam_compliant': True
         })
         

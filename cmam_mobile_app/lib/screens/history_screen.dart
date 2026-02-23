@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../models/child_assessment.dart';
 import '../services/database_service.dart';
 import '../services/auth_service.dart';
+import '../services/locale_provider.dart';
+import '../l10n/app_localizations.dart';
 import 'medical_document_screen.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -43,24 +46,25 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Future<void> _confirmClearHistory() async {
+    final locale = Provider.of<LocaleProvider>(context, listen: false).locale;
+    final l10n = AppLocalizations(locale.languageCode);
+    
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Clear History'),
-        content: const Text(
-          'Are you sure you want to delete all assessment records? This action cannot be undone.',
-        ),
+        title: Text(l10n.translate('clear_history')),
+        content: Text(l10n.translate('clear_history_confirm')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(l10n.translate('cancel')),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
             ),
-            child: const Text('Delete All'),
+            child: Text(l10n.translate('delete_all')),
           ),
         ],
       ),
@@ -83,14 +87,19 @@ class _HistoryScreenState extends State<HistoryScreen> {
     await _loadAssessments();
     
     if (mounted) {
+      final locale = Provider.of<LocaleProvider>(context, listen: false).locale;
+      final l10n = AppLocalizations(locale.languageCode);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('History cleared successfully')),
+        SnackBar(content: Text(l10n.translate('history_cleared'))),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final locale = Provider.of<LocaleProvider>(context).locale;
+    final l10n = AppLocalizations(locale.languageCode);
+    
     return _isLoading
         ? const Center(child: CircularProgressIndicator())
         : _assessments.isEmpty
@@ -106,7 +115,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           TextButton.icon(
                             onPressed: _confirmClearHistory,
                             icon: const Icon(Icons.delete_sweep, color: Colors.red),
-                            label: const Text('Clear History', style: TextStyle(color: Colors.red)),
+                            label: Text(l10n.translate('clear_history'), style: const TextStyle(color: Colors.red)),
                           ),
                         ],
                       ),
@@ -125,6 +134,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Widget _buildEmptyState() {
+    final locale = Provider.of<LocaleProvider>(context).locale;
+    final l10n = AppLocalizations(locale.languageCode);
+    
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -136,7 +148,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            'No assessments yet',
+            l10n.translate('no_assessments_yet'),
             style: TextStyle(
               fontSize: 18,
               color: Colors.grey[600],
@@ -148,6 +160,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Widget _buildAssessmentCard(ChildAssessment assessment) {
+    final locale = Provider.of<LocaleProvider>(context).locale;
+    final l10n = AppLocalizations(locale.languageCode);
     final pathway = assessment.recommendedPathway ?? 'None';
     final isUrgent = pathway == 'SC_ITP';
     final dateFormat = DateFormat('MMM dd, yyyy HH:mm');
@@ -208,17 +222,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
               children: [
                 _buildInfoChip(
                   Icons.person,
-                  assessment.sex == 'M' ? 'Boy' : 'Girl',
+                  assessment.sex == 'M' ? l10n.translate('boy') : l10n.translate('girl'),
                 ),
                 const SizedBox(width: 8),
                 _buildInfoChip(
                   Icons.calendar_today,
-                  '${assessment.ageMonths}m',
+                  '${assessment.ageMonths}${l10n.translate('months').substring(0, 1)}',
                 ),
                 const SizedBox(width: 8),
                 _buildInfoChip(
                   Icons.straighten,
-                  '${assessment.muacMm}mm',
+                  '${assessment.muacMm}${l10n.translate('mm')}',
                 ),
               ],
             ),
@@ -227,14 +241,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Z-Score: ${assessment.muacZScore?.toStringAsFixed(2) ?? 'N/A'}',
+                  '${l10n.translate('muac_zscore')}: ${assessment.muacZScore?.toStringAsFixed(2) ?? 'N/A'}',
                   style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 14,
                   ),
                 ),
                 Text(
-                  assessment.clinicalStatus ?? 'Unknown',
+                  assessment.clinicalStatus ?? l10n.translate('unknown'),
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -262,7 +276,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      assessment.synced ? 'Synced' : 'Local',
+                      assessment.synced ? l10n.translate('synced') : l10n.translate('local'),
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 12,

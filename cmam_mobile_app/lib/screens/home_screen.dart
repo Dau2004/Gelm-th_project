@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'assessment_screen.dart';
 import 'history_screen.dart';
 import 'login_screen.dart';
 import '../services/zscore_service.dart';
 import '../services/auth_service.dart';
+import '../services/locale_provider.dart';
+import '../l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,10 +28,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Provider.of<LocaleProvider>(context).locale;
+    final l10n = AppLocalizations(locale.languageCode);
+    
     return Scaffold(
       backgroundColor: const Color(0xFFF4F7F6),
       appBar: AppBar(
-        title: const Text('Gelmäth'),
+        title: Text(l10n.translate('app_name')),
         centerTitle: true,
         actions: [
           IconButton(
@@ -43,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }
             },
-            tooltip: 'Logout',
+            tooltip: l10n.translate('logout'),
           ),
         ],
       ),
@@ -92,10 +98,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      'Gelmäth',
+                    Text(
+                      l10n.translate('app_name'),
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF0E4D34),
@@ -103,20 +109,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      'Protecting Every Child',
+                    Text(
+                      l10n.translate('app_tagline'),
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         color: Colors.black54,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      'CMAM Guidelines - South Sudan 2017',
+                    Text(
+                      l10n.translate('cmam_guidelines'),
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: Colors.grey,
                       ),
@@ -128,8 +134,8 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildMenuCard(
                 context,
                 icon: Icons.add_circle_outline,
-                title: 'New Assessment',
-                subtitle: 'Screen child for malnutrition',
+                title: l10n.translate('new_assessment'),
+                subtitle: l10n.translate('screen_child_malnutrition'),
                 color: const Color(0xFF0E4D34),
                 onTap: () {
                   Navigator.push(
@@ -144,8 +150,8 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildMenuCard(
                 context,
                 icon: Icons.history,
-                title: 'Assessment History',
-                subtitle: 'View past assessments',
+                title: l10n.translate('assessment_history'),
+                subtitle: l10n.translate('view_past_assessments'),
                 color: const Color(0xFF2ECC71),
                 onTap: () {
                   Navigator.push(
@@ -163,10 +169,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Text(
-                  'Offline-first • Auto-sync when online',
+                child: Text(
+                  l10n.translate('offline_first_sync'),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     color: Colors.grey,
                   ),

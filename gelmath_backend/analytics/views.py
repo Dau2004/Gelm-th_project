@@ -54,14 +54,45 @@ class StateTrendsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     
     def get(self, request):
+        # All 10 South Sudan states
+        ALL_STATES = [
+            'Central Equatoria',
+            'Eastern Equatoria',
+            'Western Equatoria',
+            'Jonglei',
+            'Unity',
+            'Upper Nile',
+            'Warrap',
+            'Northern Bahr el Ghazal',
+            'Western Bahr el Ghazal',
+            'Lakes'
+        ]
+        
         state_stats = Assessment.objects.values('state').annotate(
             total=Count('id'),
             sam_count=Count('id', filter=Q(clinical_status='SAM')),
             mam_count=Count('id', filter=Q(clinical_status='MAM')),
             healthy_count=Count('id', filter=Q(clinical_status='Healthy'))
-        ).order_by('-total')
+        )
         
-        return Response(list(state_stats))
+        # Create dict for quick lookup
+        stats_dict = {s['state']: s for s in state_stats}
+        
+        # Return all 10 states with data or zeros
+        result = []
+        for state in ALL_STATES:
+            if state in stats_dict:
+                result.append(stats_dict[state])
+            else:
+                result.append({
+                    'state': state,
+                    'total': 0,
+                    'sam_count': 0,
+                    'mam_count': 0,
+                    'healthy_count': 0
+                })
+        
+        return Response(result)
 
 
 class TimeSeriesView(APIView):

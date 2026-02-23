@@ -55,8 +55,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (mounted) {
       final provider = SettingsProvider.of(context);
       provider?.onSettingsChanged();
+      final locale = Provider.of<LocaleProvider>(context, listen: false).locale;
+      final l10n = AppLocalizations(locale.languageCode);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Theme updated')),
+        SnackBar(content: Text(l10n.translate('theme_updated'))),
       );
     }
   }
@@ -95,20 +97,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _logout() async {
+    final locale = Provider.of<LocaleProvider>(context, listen: false).locale;
+    final l10n = AppLocalizations(locale.languageCode);
+    
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
+        title: Text(l10n.translate('logout')),
+        content: Text(l10n.translate('logout_confirm')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(l10n.translate('cancel')),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Logout'),
+            child: Text(l10n.translate('logout')),
           ),
         ],
       ),
@@ -150,7 +155,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 8),
                 if (_role.isNotEmpty) 
                   Chip(
-                    label: Text(_role == 'CHW' ? 'Community Health Worker' : _role),
+                    label: Text(_role == 'CHW' ? l10n.translate('community_health_worker') : _role),
                     backgroundColor: const Color(0xFF2D5F3F).withOpacity(0.1),
                   ),
               ],
@@ -162,24 +167,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Card(
           child: Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.all(16),
+              Padding(
+                padding: const EdgeInsets.all(16),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('App Settings', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  child: Text(l10n.translate('app_settings'), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
               ),
               const Divider(height: 1),
               SwitchListTile(
-                title: const Text('Dark Mode'),
-                subtitle: const Text('Switch between light and dark theme'),
+                title: Text(l10n.translate('dark_mode')),
+                subtitle: Text(l10n.translate('switch_theme')),
                 value: _isDarkMode,
                 activeColor: const Color(0xFF2D5F3F),
                 onChanged: _saveDarkMode,
               ),
               const Divider(height: 1),
               ListTile(
-                title: const Text('Text Size'),
+                title: Text(l10n.translate('text_size')),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -193,7 +198,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       onChanged: _saveTextSize,
                     ),
                     Text(
-                      'Current: ${(_textSize * 100).round()}%',
+                      '${l10n.translate('current')}: ${(_textSize * 100).round()}%',
                       style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
@@ -224,11 +229,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Card(
           child: Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.all(16),
+              Padding(
+                padding: const EdgeInsets.all(16),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Data Sync', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  child: Text(l10n.translate('data_sync'), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
               ),
               const Divider(height: 1),
@@ -240,8 +245,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : const Icon(Icons.cloud_upload, color: Color(0xFF2D5F3F)),
-                title: const Text('Sync Assessments'),
-                subtitle: const Text('Upload unsynced data to server'),
+                title: Text(l10n.translate('sync_assessments')),
+                subtitle: Text(l10n.translate('upload_unsynced')),
                 trailing: _isSyncing ? null : const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: _isSyncing ? null : _syncData,
               ),
@@ -256,11 +261,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('App Information', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(l10n.translate('app_information'), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 const Divider(height: 24),
-                _buildInfoRow('Version', '1.0.0'),
-                _buildInfoRow('Guidelines', 'South Sudan CMAM 2017'),
-                _buildInfoRow('WHO Standards', 'ACFA 3-60 months'),
+                _buildInfoRow(l10n.translate('version'), '1.0.0'),
+                _buildInfoRow(l10n.translate('guidelines'), 'South Sudan CMAM 2017'),
+                _buildInfoRow(l10n.translate('who_standards'), 'ACFA 3-60 months'),
               ],
             ),
           ),
@@ -270,8 +275,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Card(
           child: ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text('Logout', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-            subtitle: const Text('Sign out of your account'),
+            title: Text(l10n.translate('logout'), style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+            subtitle: Text(l10n.translate('sign_out_account')),
             onTap: _logout,
           ),
         ),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
+import '../services/locale_provider.dart';
+import '../l10n/app_localizations.dart';
 import '../main.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,9 +18,12 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
   Future<void> _login() async {
+    final locale = Provider.of<LocaleProvider>(context, listen: false).locale;
+    final l10n = AppLocalizations(locale.languageCode);
+    
     if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter username and password')),
+        SnackBar(content: Text(l10n.translate('please_enter_credentials'))),
       );
       return;
     }
@@ -37,9 +43,11 @@ class _LoginScreenState extends State<LoginScreen> {
         MaterialPageRoute(builder: (context) => const MainScreen()),
       );
     } else if (mounted) {
+      final locale = Provider.of<LocaleProvider>(context, listen: false).locale;
+      final l10n = AppLocalizations(locale.languageCode);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Invalid username or password'),
+        SnackBar(
+          content: Text(l10n.translate('invalid_credentials')),
           backgroundColor: Colors.red,
         ),
       );
@@ -48,6 +56,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Provider.of<LocaleProvider>(context).locale;
+    final l10n = AppLocalizations(locale.languageCode);
+    
     return Scaffold(
       backgroundColor: const Color(0xFF0E4D34),
       body: SafeArea(
@@ -87,9 +98,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                const Text(
-                  'Gelmëth',
-                  style: TextStyle(
+                Text(
+                  l10n.translate('app_name'),
+                  style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -97,9 +108,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Protecting Every Child',
-                  style: TextStyle(
+                Text(
+                  l10n.translate('app_tagline'),
+                  style: const TextStyle(
                     fontSize: 16,
                     color: Colors.white70,
                     fontWeight: FontWeight.w500,
@@ -121,9 +132,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: Column(
                     children: [
-                      const Text(
-                        'Welcome Back',
-                        style: TextStyle(
+                      Text(
+                        l10n.translate('welcome_back'),
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF0E4D34),
@@ -132,18 +143,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 24),
                       TextField(
                         controller: _usernameController,
-                        decoration: const InputDecoration(
-                          labelText: 'Username',
-                          prefixIcon: Icon(Icons.person, color: Color(0xFF0E4D34)),
+                        decoration: InputDecoration(
+                          labelText: l10n.translate('username'),
+                          prefixIcon: const Icon(Icons.person, color: Color(0xFF0E4D34)),
                         ),
                       ),
                       const SizedBox(height: 16),
                       TextField(
                         controller: _passwordController,
                         obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Password',
-                          prefixIcon: Icon(Icons.lock, color: Color(0xFF0E4D34)),
+                        decoration: InputDecoration(
+                          labelText: l10n.translate('password'),
+                          prefixIcon: const Icon(Icons.lock, color: Color(0xFF0E4D34)),
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -167,9 +178,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     color: Colors.white,
                                   ),
                                 )
-                              : const Text(
-                                  'Login',
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                              : Text(
+                                  l10n.translate('login'),
+                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                                 ),
                         ),
                       ),
@@ -177,9 +188,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                const Text(
-                  'Ministry of Health • WHO',
-                  style: TextStyle(
+                Text(
+                  l10n.translate('ministry_who'),
+                  style: const TextStyle(
                     fontSize: 12,
                     color: Colors.white60,
                   ),
