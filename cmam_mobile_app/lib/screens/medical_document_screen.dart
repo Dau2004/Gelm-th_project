@@ -634,11 +634,11 @@ class _MedicalDocumentScreenState extends State<MedicalDocumentScreen> {
       case 'SC_ITP':
         return '🚨 URGENT: Refer to Stabilization Centre immediately for inpatient care';
       case 'OTP':
-        return '📋 Enroll in Outpatient Therapeutic Programme - Weekly RUTF distribution';
+        return '[LIST] Enroll in Outpatient Therapeutic Programme - Weekly RUTF distribution';
       case 'TSFP':
         return '🥣 Enroll in Targeted Supplementary Feeding Programme';
       case 'None':
-        return '✅ Provide counselling on infant and young child feeding practices';
+        return 'PASS Provide counselling on infant and young child feeding practices';
       default:
         return 'Review assessment';
     }

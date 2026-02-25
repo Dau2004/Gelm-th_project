@@ -105,11 +105,11 @@ class PredictionService {
       case 'SC_ITP':
         return '🚨 URGENT: Refer to Stabilization Centre immediately';
       case 'OTP':
-        return '📋 Enroll in Outpatient Therapeutic Programme';
+        return '[LIST] Enroll in Outpatient Therapeutic Programme';
       case 'TSFP':
         return '🥣 Enroll in Supplementary Feeding Programme';
       case 'None':
-        return '✅ Provide counselling and schedule follow-up';
+        return 'PASS Provide counselling and schedule follow-up';
       default:
         return 'Review assessment';
     }

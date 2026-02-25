@@ -94,7 +94,7 @@ for month_data in months_data:
         )
         created_count += 1
 
-print(f"✓ Created {created_count} historical assessments across 6 months")
-print(f"✓ SAM trend: Increasing from 3 to 13 cases per month")
-print(f"✓ MAM trend: Stable around 8 cases per month")
-print(f"✓ Refresh the Predictive Analytics dashboard to see the forecast!")
+print(f"OK Created {created_count} historical assessments across 6 months")
+print(f"OK SAM trend: Increasing from 3 to 13 cases per month")
+print(f"OK MAM trend: Stable around 8 cases per month")
+print(f"OK Refresh the Predictive Analytics dashboard to see the forecast!")

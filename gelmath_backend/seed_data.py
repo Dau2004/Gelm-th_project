@@ -154,7 +154,7 @@ for i in range(50):
 
 print(f"  Created {Assessment.objects.count()} assessments")
 
-print("\n✅ Database seeded successfully!")
+print("\nPASS Database seeded successfully!")
 print("\nLogin credentials:")
 print("  MoH Admin: moh_admin / admin123")
 print("  Doctor: dr_john / doctor123")

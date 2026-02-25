@@ -19,42 +19,42 @@ class QualityCheckService {
     if (muacMm < 50 || muacMm > 200) {
       flags.add('unit_error');
       status = 'SUSPICIOUS';
-      recommendation = '⚠️ Please verify MUAC unit (mm vs cm)';
+      recommendation = 'WARNING Please verify MUAC unit (mm vs cm)';
     }
     
     // Rule 2: Age out of range
     if (ageMonths < 6 || ageMonths > 59) {
       flags.add('age_out_of_range');
       status = 'SUSPICIOUS';
-      recommendation = '⚠️ Please verify child age (6-59 months)';
+      recommendation = 'WARNING Please verify child age (6-59 months)';
     }
     
     // Rule 3: Invalid appetite
     if (!['good', 'poor', 'failed'].contains(appetite)) {
       flags.add('invalid_appetite');
       status = 'SUSPICIOUS';
-      recommendation = '⚠️ Please verify appetite assessment';
+      recommendation = 'WARNING Please verify appetite assessment';
     }
     
     // Rule 4: Invalid edema
     if (edema < 0 || edema > 3) {
       flags.add('invalid_edema');
       status = 'SUSPICIOUS';
-      recommendation = '⚠️ Please verify edema grade (0-3)';
+      recommendation = 'WARNING Please verify edema grade (0-3)';
     }
     
     // Rule 5: Impossible combinations
     if (muacMm > 130 && edema >= 2) {
       flags.add('impossible_combo');
       status = 'SUSPICIOUS';
-      recommendation = '⚠️ High MUAC with severe edema is unusual - please re-check';
+      recommendation = 'WARNING High MUAC with severe edema is unusual - please re-check';
     }
     
     // Rule 6: Extreme MUAC values
     if (muacMm < 80 && edema == 0) {
       flags.add('extreme_low');
       status = 'SUSPICIOUS';
-      recommendation = '⚠️ Very low MUAC - please re-measure carefully';
+      recommendation = 'WARNING Very low MUAC - please re-measure carefully';
     }
     
     // Rule 7: Near threshold (borderline cases - just flag, don't block)
@@ -76,9 +76,9 @@ class QualityCheckService {
   static String getQualityMessage(String status) {
     switch (status) {
       case 'OK':
-        return '✅ Measurement quality: Good';
+        return 'PASS Measurement quality: Good';
       case 'SUSPICIOUS':
-        return '⚠️ Measurement quality: Needs verification';
+        return 'WARNING Measurement quality: Needs verification';
       default:
         return 'Unknown status';
     }

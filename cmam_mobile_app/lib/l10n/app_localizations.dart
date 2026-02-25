@@ -93,8 +93,8 @@ class AppLocalizations {
       'create_referral': 'Create Referral',
       'complete_assessment': 'Complete Assessment',
       'back_to_home': 'Back to Home',
-      'synced_to_dashboard': '✓ Assessment synced to MoH Dashboard',
-      'sync_failed_login': '⚠ Sync failed - Please login first',
+      'synced_to_dashboard': 'OK Assessment synced to MoH Dashboard',
+      'sync_failed_login': 'WARNING Sync failed - Please login first',
       
       // History Screen
       'no_assessments_yet': 'No assessments yet',
@@ -242,8 +242,8 @@ class AppLocalizations {
       'create_referral': 'إنشاء إحالة',
       'complete_assessment': 'إكمال التقييم',
       'back_to_home': 'العودة للرئيسية',
-      'synced_to_dashboard': '✓ تم مزامنة التقييم مع لوحة وزارة الصحة',
-      'sync_failed_login': '⚠ فشلت المزامنة - الرجاء تسجيل الدخول أولاً',
+      'synced_to_dashboard': 'OK تم مزامنة التقييم مع لوحة وزارة الصحة',
+      'sync_failed_login': 'WARNING فشلت المزامنة - الرجاء تسجيل الدخول أولاً',
       
       // History Screen
       'no_assessments_yet': 'لا توجد تقييمات بعد',

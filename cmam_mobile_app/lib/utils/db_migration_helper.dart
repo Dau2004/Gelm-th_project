@@ -8,6 +8,6 @@ class DbMigrationHelper {
     
     // Delete old database
     await deleteDatabase(path);
-    print('✅ Old database deleted. App will create fresh database on next launch.');
+    print('PASS Old database deleted. App will create fresh database on next launch.');
   }
 }

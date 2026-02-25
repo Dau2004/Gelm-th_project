@@ -26,7 +26,7 @@ class ApiService {
       final token = await _getToken();
       
       if (token == null) {
-        print('❌ Sync failed: No authentication token found');
+        print('FAIL Sync failed: No authentication token found');
         return null;
       }
       
@@ -38,14 +38,14 @@ class ApiService {
         final facilityId = await _getFacilityIdByName(payload['facility']);
         if (facilityId != null) {
           payload['facility'] = facilityId;
-          print('✓ Facility converted: ${payload['facility']} -> $facilityId');
+          print('OK Facility converted: ${payload['facility']} -> $facilityId');
         } else {
-          print('⚠ Facility not found, removing from payload');
+          print('WARNING Facility not found, removing from payload');
           payload.remove('facility');
         }
       }
       
-      print('📦 Payload: ${jsonEncode(payload)}');
+      print('[PACKAGE] Payload: ${jsonEncode(payload)}');
       
       final response = await http.post(
         Uri.parse('$baseUrl/assessments/'),
@@ -56,13 +56,13 @@ class ApiService {
       print('📥 Response: ${response.statusCode}');
       
       if (response.statusCode == 201) {
-        print('✅ Sync successful!');
+        print('PASS Sync successful!');
         return jsonDecode(response.body);
       }
-      print('❌ Sync failed: ${response.statusCode} - ${response.body}');
+      print('FAIL Sync failed: ${response.statusCode} - ${response.body}');
       return null;
     } catch (e) {
-      print('❌ Sync error: $e');
+      print('FAIL Sync error: $e');
       return null;
     }
   }
@@ -129,7 +129,7 @@ class ApiService {
   static Future<List<Map<String, dynamic>>> getActiveDoctors() async {
     try {
       final token = await _getToken();
-      print('🔑 Token for doctors: ${token != null ? "Present" : "Missing"}');
+      print('[KEY] Token for doctors: ${token != null ? "Present" : "Missing"}');
       
       final headers = await _getHeaders();
       print('📤 Fetching doctors from: $baseUrl/referrals/active_doctors/');
@@ -142,21 +142,21 @@ class ApiService {
       print('📥 Doctors response: ${response.statusCode}');
       
       if (response.statusCode == 401) {
-        print('❌ Authentication failed - clearing token');
+        print('FAIL Authentication failed - clearing token');
         await logout();
         return [];
       }
       
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
-        print('✅ Doctors loaded: ${data.length}');
+        print('PASS Doctors loaded: ${data.length}');
         return data.cast<Map<String, dynamic>>();
       } else {
-        print('❌ Failed to load doctors: ${response.statusCode} - ${response.body}');
+        print('FAIL Failed to load doctors: ${response.statusCode} - ${response.body}');
       }
       return [];
     } catch (e) {
-      print('❌ Get doctors error: $e');
+      print('FAIL Get doctors error: $e');
       return [];
     }
   }
@@ -177,7 +177,7 @@ class ApiService {
       );
       
       if (assessmentResponse.statusCode != 200) {
-        print('❌ Failed to find assessment: ${assessmentResponse.statusCode}');
+        print('FAIL Failed to find assessment: ${assessmentResponse.statusCode}');
         return false;
       }
       
@@ -185,12 +185,12 @@ class ApiService {
       final results = assessmentData['results'] ?? assessmentData;
       
       if (results.isEmpty) {
-        print('❌ No assessment found for child_id: $childId');
+        print('FAIL No assessment found for child_id: $childId');
         return false;
       }
       
       final assessmentId = results[0]['id'];
-      print('✓ Found assessment ID: $assessmentId');
+      print('OK Found assessment ID: $assessmentId');
       
       final response = await http.post(
         Uri.parse('$baseUrl/referrals/'),
@@ -206,14 +206,14 @@ class ApiService {
 
       print('📥 Referral response: ${response.statusCode}');
       if (response.statusCode == 201) {
-        print('✅ Referral created successfully');
+        print('PASS Referral created successfully');
         return true;
       } else {
-        print('❌ Referral failed: ${response.body}');
+        print('FAIL Referral failed: ${response.body}');
         return false;
       }
     } catch (e) {
-      print('❌ Create referral error: $e');
+      print('FAIL Create referral error: $e');
       return false;
     }
   }

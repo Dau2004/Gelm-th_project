@@ -39,7 +39,7 @@ class _ResultScreenState extends State<ResultScreen> {
       if (result != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('✓ Assessment synced to MoH Dashboard'),
+            content: Text('OK Assessment synced to MoH Dashboard'),
             backgroundColor: Color(0xFF2ECC71),
             duration: Duration(seconds: 2),
           ),
@@ -47,7 +47,7 @@ class _ResultScreenState extends State<ResultScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('⚠ Sync failed - Please login first'),
+            content: Text('WARNING Sync failed - Please login first'),
             backgroundColor: Color(0xFFE67E22),
             duration: Duration(seconds: 3),
           ),

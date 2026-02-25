@@ -32,12 +32,12 @@ class _DoctorSelectionScreenState extends State<DoctorSelectionScreen> {
   Future<void> _loadDoctors() async {
     setState(() => _isLoading = true);
     
-    print('🔍 Loading doctors...');
+    print('[SEARCH] Loading doctors...');
     final doctors = await ApiService.getActiveDoctors();
-    print('📋 Doctors received: ${doctors.length}');
+    print('[LIST] Doctors received: ${doctors.length}');
     
     if (doctors.isEmpty) {
-      print('⚠️ No doctors found - check authentication');
+      print('WARNING No doctors found - check authentication');
     }
     
     setState(() {
@@ -64,7 +64,7 @@ class _DoctorSelectionScreenState extends State<DoctorSelectionScreen> {
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('✓ Referral sent successfully'),
+            content: Text('OK Referral sent successfully'),
             backgroundColor: Color(0xFF2ECC71),
           ),
         );

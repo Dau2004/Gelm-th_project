@@ -18,7 +18,7 @@ for state in states:
     )
     facilities.append(f)
     if created:
-        print(f'✅ Created facility: {f.name}')
+        print(f'PASS Created facility: {f.name}')
 
 # Create CHW users
 for i in range(5):
@@ -32,7 +32,7 @@ for i in range(5):
             facility=random.choice(facilities),
             state=random.choice(states)
         )
-        print(f'✅ Created CHW: {username}')
+        print(f'PASS Created CHW: {username}')
 
 # Create Doctor users
 for i in range(3):
@@ -46,7 +46,7 @@ for i in range(3):
             facility=random.choice(facilities),
             state=random.choice(states)
         )
-        print(f'✅ Created doctor: {username}')
+        print(f'PASS Created doctor: {username}')
 
 # Create sample assessments
 existing_count = Assessment.objects.count()
@@ -66,9 +66,9 @@ if existing_count < 50:
             facility=random.choice(facilities),
             clinical_status=random.choice(['SAM', 'MAM', 'Healthy'])
         )
-    print(f'✅ Created {50 - existing_count} assessments')
+    print(f'PASS Created {50 - existing_count} assessments')
 
-print('\n🎉 Sample data seeding complete!')
-print(f'📊 Total facilities: {Facility.objects.count()}')
-print(f'👥 Total users: {User.objects.count()}')
-print(f'📋 Total assessments: {Assessment.objects.count()}')
+print('\n[SUCCESS] Sample data seeding complete!')
+print(f'[DATA] Total facilities: {Facility.objects.count()}')
+print(f'[USERS] Total users: {User.objects.count()}')
+print(f'[LIST] Total assessments: {Assessment.objects.count()}')

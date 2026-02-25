@@ -56,7 +56,7 @@ class SyncService {
             }
           }
           
-          print('📦 Syncing: ${jsonEncode(payload)}');
+          print('[PACKAGE] Syncing: ${jsonEncode(payload)}');
           
           final response = await http.post(
             Uri.parse('$baseUrl/assessments/'),
@@ -73,7 +73,7 @@ class SyncService {
             successCount++;
           }
         } catch (e) {
-          print('❌ Failed to sync assessment ${assessment.childId}: $e');
+          print('FAIL Failed to sync assessment ${assessment.childId}: $e');
         }
       }
       
