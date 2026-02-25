@@ -1,30 +1,67 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:cmam_app/main.dart';
+import 'package:cmam_app/screens/assessment_screen.dart';
+import 'package:cmam_app/screens/result_screen.dart';
+import 'package:cmam_app/services/zscore_service.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const CMAMApp());
+  setUpAll(() async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    await ZScoreService.loadLMSData();
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  group('Mobile UI Smoke Tests', () {
+    testWidgets('App launches without crashing', (WidgetTester tester) async {
+      await tester.pumpWidget(const MyApp());
+      expect(find.byType(MaterialApp), findsOneWidget);
+    });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    testWidgets('Assessment screen renders', (WidgetTester tester) async {
+      await tester.pumpWidget(MaterialApp(home: AssessmentScreen()));
+      await tester.pumpAndSettle();
+      
+      expect(find.text('New Assessment'), findsOneWidget);
+      expect(find.byType(TextFormField), findsWidgets);
+    });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    testWidgets('Assessment form has required fields', (WidgetTester tester) async {
+      await tester.pumpWidget(MaterialApp(home: AssessmentScreen()));
+      await tester.pumpAndSettle();
+      
+      expect(find.text('Child ID'), findsOneWidget);
+      expect(find.text('Age (months)'), findsOneWidget);
+      expect(find.text('MUAC (mm)'), findsOneWidget);
+    });
+
+    testWidgets('Result screen displays data', (WidgetTester tester) async {
+      final testData = {
+        'child_id': 'TEST_001',
+        'clinical_status': 'SAM',
+        'recommended_pathway': 'SC_ITP',
+        'confidence': 0.95,
+        'muac_mm': 105,
+        'age_months': 24,
+      };
+
+      await tester.pumpWidget(MaterialApp(
+        home: ResultScreen(assessmentData: testData),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.text('TEST_001'), findsOneWidget);
+      expect(find.textContaining('SAM'), findsOneWidget);
+    });
+
+    testWidgets('Form validation triggers on empty submit', (WidgetTester tester) async {
+      await tester.pumpWidget(MaterialApp(home: AssessmentScreen()));
+      await tester.pumpAndSettle();
+
+      final submitButton = find.text('Submit Assessment');
+      await tester.tap(submitButton);
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('required'), findsWidgets);
+    });
   });
 }

@@ -327,13 +327,13 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                     _buildTextField(
                       controller: _ageController,
                       label: 'Age (months)',
-                      hint: '3-60',
+                      hint: '6-59',
                       keyboardType: TextInputType.number,
                       validator: (v) {
                         if (v?.isEmpty ?? true) return 'Required';
                         final age = int.tryParse(v!);
-                        if (age == null || age < 3 || age > 60) {
-                          return 'Age must be 3-60 months';
+                        if (age == null || age < 6 || age > 59) {
+                          return 'Age must be 6-59 months';
                         }
                         return null;
                       },
@@ -342,13 +342,13 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                     _buildTextField(
                       controller: _muacController,
                       label: 'MUAC (mm)',
-                      hint: '90-200',
+                      hint: '80-200',
                       keyboardType: TextInputType.number,
                       validator: (v) {
                         if (v?.isEmpty ?? true) return 'Required';
                         final muac = int.tryParse(v!);
-                        if (muac == null || muac < 90 || muac > 200) {
-                          return 'MUAC must be 90-200 mm';
+                        if (muac == null || muac < 80 || muac > 200) {
+                          return 'MUAC must be 80-200 mm';
                         }
                         return null;
                       },

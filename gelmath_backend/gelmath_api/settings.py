@@ -3,7 +3,7 @@ from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-gelmath-2025-change-in-production'
+SECRET_KEY = 'yk^j+h)sj@to6p6v2#pax67a5d4#1phs#w6wb^(a1ga=lg7)ad'
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 

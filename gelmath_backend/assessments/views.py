@@ -128,6 +128,8 @@ def explain_prediction(request):
         # Handle None or missing confidence
         if actual_confidence is None:
             actual_confidence = 0.95  # Default high confidence
+        elif isinstance(actual_confidence, str):
+            actual_confidence = float(actual_confidence) / 100 if float(actual_confidence) > 1 else float(actual_confidence)
         elif isinstance(actual_confidence, (int, float)) and actual_confidence > 1:
             actual_confidence = actual_confidence / 100  # Convert percentage to decimal
         

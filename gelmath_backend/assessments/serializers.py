@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from .models import Assessment, TreatmentRecord, Referral
 from accounts.models import User
+import joblib
+import pandas as pd
+import os
 
 
 class AssessmentSerializer(serializers.ModelSerializer):
@@ -23,10 +26,48 @@ class AssessmentCreateSerializer(serializers.ModelSerializer):
                   'county', 'chw_name', 'chw_phone', 'chw_notes', 'chw_signature']
     
     def create(self, validated_data):
-        # Set CHW from authenticated user if role is CHW
         user = self.context['request'].user
         if user.role == 'CHW':
             validated_data['chw'] = user
+        
+        # Run ML prediction if not provided
+        if not validated_data.get('clinical_status') or not validated_data.get('recommended_pathway'):
+            try:
+                model_path = os.path.join(os.path.dirname(__file__), '../../Models/cmam_model.pkl')
+                if os.path.exists(model_path):
+                    model = joblib.load(model_path)
+                    
+                    # Prepare features in correct order
+                    features = pd.DataFrame([{
+                        'muac_mm': validated_data.get('muac_mm', 0),
+                        'age_months': validated_data.get('age_months', 0),
+                        'sex': 1 if validated_data.get('sex') == 'M' else 0,
+                        'edema': validated_data.get('edema', 0),
+                        'appetite': 1 if validated_data.get('appetite') in ['poor', 'failed'] else 0,
+                        'danger_signs': validated_data.get('danger_signs', 0)
+                    }])
+                    
+                    # Predict
+                    prediction = model.predict(features)[0]
+                    confidence = model.predict_proba(features).max()
+                    
+                    # Determine clinical status
+                    muac = validated_data.get('muac_mm', 0)
+                    edema = validated_data.get('edema', 0)
+                    if muac < 115 or edema > 0:
+                        clinical_status = 'SAM'
+                    elif muac < 125:
+                        clinical_status = 'MAM'
+                    else:
+                        clinical_status = 'Healthy'
+                        prediction = 'None'  # Override for healthy
+                    
+                    validated_data['clinical_status'] = clinical_status
+                    validated_data['recommended_pathway'] = prediction
+                    validated_data['confidence'] = round(confidence * 100, 1)
+            except Exception as e:
+                print(f"ML prediction error: {e}")
+        
         return super().create(validated_data)
 
 
