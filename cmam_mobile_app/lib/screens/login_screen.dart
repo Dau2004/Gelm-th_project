@@ -4,6 +4,7 @@ import '../services/auth_service.dart';
 import '../services/locale_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
+import 'privacy_policy_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -70,8 +71,8 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Image.asset(
                   'assets/images/logo_white.png',
-                  height: 220,
-                  width: 220,
+                  height: 280,
+                  width: 280,
                 ),
                 const SizedBox(height: 48),
                 Container(
@@ -150,6 +151,36 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: const TextStyle(
                     fontSize: 12,
                     color: Colors.white60,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  '© 2026 Gelmëth. All rights reserved.',
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: Colors.white70,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PrivacyPolicyScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Privacy Policy & Terms',
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.white,
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ],
