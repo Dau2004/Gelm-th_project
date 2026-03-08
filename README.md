@@ -487,6 +487,14 @@ Signs      Model 1              Dashboard                                   CHW 
 - User management for MoH administrators
 - Interactive data visualizations
 
+### 📱 Mobile App (Android APK)
+**Download**: [gelmath-cmam-v1.0.0.apk](distribution/gelmath-cmam-v1.0.0.apk)
+
+- Version: 1.0.0
+- Size: 23 MB
+- Offline-first architecture
+- Real-time ML predictions
+
 ### 🎥 Demo Video
 **Watch Full System Demo**: [Google Drive Video](https://drive.google.com/file/d/1qRxHTD36S2WSzWqS2LxQNqerkk_lD6FO/view?usp=sharing)
 
