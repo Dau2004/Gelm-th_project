@@ -412,23 +412,40 @@ jupyter notebook
 ### Web Dashboard
 
 #### 1. **National Summary**
-![Dashboard](Screenshot/MoH_Overview.png)
+![Dashboard](Screenshot/Moh-home.png)
 - Total assessments
 - SAM/MAM/Healthy distribution
 - Trend charts (Recharts)
 - Geographic map (Leaflet)
 
 #### 2. **Analytics**
-![Facility](Screenshot/MoH_analytics.png)
+![Facility](Screenshot/Moh-analytics.png)
 - Monthly Trend
 - Ages Group Distribution
 - Gender distribution
+#### 3. **Facilities**
+![Facilities](Screenshot/Moh-analytics.png)
+- View each facility activites
 
-#### 3. **User Management**
-![Users](Screenshot/MoH_Usersmanagement.png)
+#### 4. **User Management**
+![Users](Screenshot/Moh-users.png)
 - CHW accounts
 - Role-based access
 - Activity logs
+
+#### 5. **Geo Headmap**
+![Users](Screenshot/Moh-Geo.png)
+- Show each state with its status
+
+#### 6. **Report**
+![Users](Screenshot/Moh-Report.png)
+- Show the report per state, facilities, CHW and National
+
+#### 7. **ML Explainability**
+![Users](Screenshot/Moh-Explain.png)
+- It explain why each case was recommended
+
+
 
 ### System Architecture
 
@@ -665,6 +682,7 @@ Classification Report:
    macro avg       0.95      0.94      0.94       605
 weighted avg       0.94      0.94      0.94       605
 ```
+![Assessment Form](Screenshot/Assessment_mobileapp.png)
 
 **Feature Importance**:
 1. MUAC: 45.04%
