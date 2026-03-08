@@ -682,7 +682,7 @@ Classification Report:
    macro avg       0.95      0.94      0.94       605
 weighted avg       0.94      0.94      0.94       605
 ```
-![Assessment Form](Screenshot/Assessment_mobileapp.png)
+![Assessment Form](Screenshot/model.png)
 
 **Feature Importance**:
 1. MUAC: 45.04%
