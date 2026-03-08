@@ -1,0 +1,163 @@
+═══════════════════════════════════════════════════════════════
+  GELMATH CMAM MOBILE APP - INSTALLATION GUIDE
+═══════════════════════════════════════════════════════════════
+
+📱 App Version: 1.0.0
+📅 Release Date: February 2026
+🏥 System: Community Management of Acute Malnutrition (CMAM)
+
+═══════════════════════════════════════════════════════════════
+
+📋 INSTALLATION STEPS
+
+1. ENABLE INSTALLATION FROM UNKNOWN SOURCES
+   ─────────────────────────────────────────
+   • Open "Settings" on your Android phone
+   • Go to "Security" or "Privacy"
+   • Find "Install unknown apps" or "Unknown sources"
+   • Enable it for your file manager or browser
+
+2. TRANSFER THE APP FILE
+   ─────────────────────────────────────────
+   • Copy "gelmath-cmam-v1.0.0.apk" to your phone
+   • You can use:
+     - USB cable
+     - WhatsApp/Email
+     - Bluetooth
+     - SD card
+
+3. INSTALL THE APP
+   ─────────────────────────────────────────
+   • Locate the APK file on your phone
+   • Tap on "gelmath-cmam-v1.0.0.apk"
+   • Tap "Install"
+   • Wait for installation to complete
+   • Tap "Open"
+
+4. FIRST TIME LOGIN
+   ─────────────────────────────────────────
+   Use your assigned credentials:
+   
+   • CHW (Community Health Worker):
+     Username: chw_user
+     Password: chw123
+   
+   • Doctor:
+     Username: doctor_user
+     Password: doctor123
+   
+   • MoH Admin:
+     Username: moh_admin
+     Password: admin123
+
+═══════════════════════════════════════════════════════════════
+
+✨ FEATURES
+
+• Offline Assessment: Works without internet
+• ML Predictions: AI-powered care pathway recommendations
+• WHO Compliance: Uses official WHO Z-score calculations
+• Auto-Sync: Syncs data when internet is available
+• History: View past assessments
+• Quality Check: Detects measurement errors
+
+═══════════════════════════════════════════════════════════════
+
+📱 SYSTEM REQUIREMENTS
+
+• Android 5.0 (Lollipop) or higher
+• 50 MB free storage space
+• Internet connection (for initial login and sync)
+
+═══════════════════════════════════════════════════════════════
+
+🔧 TROUBLESHOOTING
+
+Problem: "App not installed"
+Solution: Uninstall any old version first, then reinstall
+
+Problem: "Installation blocked"
+Solution: Enable "Unknown sources" in Settings → Security
+
+Problem: "Parse error"
+Solution: Re-download the APK file, ensure it's not corrupted
+
+Problem: "Cannot login"
+Solution: Check internet connection, verify credentials
+
+Problem: App crashes
+Solution: Clear app data in Settings → Apps → Gelmath CMAM
+
+═══════════════════════════════════════════════════════════════
+
+📞 SUPPORT
+
+Email: support@gelmath.org
+Phone: +211-XXX-XXXX
+Backend: http://100.54.11.150/api/
+
+═══════════════════════════════════════════════════════════════
+
+🔒 PERMISSIONS
+
+The app requires these permissions:
+• Internet: For syncing data with server
+• Storage: For offline database
+• Camera: For future features (optional)
+
+═══════════════════════════════════════════════════════════════
+
+📖 QUICK START GUIDE
+
+1. Open the app
+2. Login with your credentials
+3. Tap "New Assessment"
+4. Fill in child information:
+   - Child ID
+   - Sex (Male/Female)
+   - Age (6-59 months)
+   - MUAC measurement (mm)
+   - Edema grade (0-3)
+   - Appetite (Good/Poor)
+   - Danger signs
+5. Tap "Submit"
+6. View results and recommended care pathway
+7. Save assessment
+8. Sync when online
+
+═══════════════════════════════════════════════════════════════
+
+✅ WHAT'S INCLUDED
+
+• gelmath-cmam-v1.0.0.apk (24.3 MB)
+• This installation guide
+• User manual (separate document)
+
+═══════════════════════════════════════════════════════════════
+
+🎯 CARE PATHWAYS
+
+The app recommends one of these pathways:
+
+• SC-ITP: Stabilization Center / Inpatient Therapeutic Program
+  (Severe Acute Malnutrition with complications)
+
+• OTP: Outpatient Therapeutic Program
+  (Severe Acute Malnutrition without complications)
+
+• TSFP: Targeted Supplementary Feeding Program
+  (Moderate Acute Malnutrition)
+
+═══════════════════════════════════════════════════════════════
+
+📊 BASED ON CMAM GUIDELINES
+
+This app follows the official Community Management of Acute
+Malnutrition (CMAM) guidelines from South Sudan 2017 and WHO
+standards for children aged 6-59 months.
+
+═══════════════════════════════════════════════════════════════
+
+Thank you for using Gelmath CMAM System! 🏥
+
+═══════════════════════════════════════════════════════════════

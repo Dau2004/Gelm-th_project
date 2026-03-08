@@ -4,9 +4,7 @@ import '../models/child_assessment.dart';
 import 'auth_service.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://localhost:8000/api'; // iOS Simulator
-  // Use 'http://10.0.2.2:8000/api' for Android emulator
-  // Use your computer's IP (e.g., 'http://192.168.1.x:8000/api') for physical device
+  static const String baseUrl = 'http://100.54.11.150/api'; // Production EC2
 
   static Future<String?> _getToken() async {
     return await AuthService.getAccessToken();
