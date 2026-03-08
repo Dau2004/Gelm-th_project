@@ -477,14 +477,26 @@ Signs      Model 1              Dashboard                                   CHW 
 
 ---
 
+## 🚀 Live Deployment
+
+### Web Dashboard (Production)
+**URL**: [http://gelmath-dashboard-2026.s3-website-us-east-1.amazonaws.com](http://gelmath-dashboard-2026.s3-website-us-east-1.amazonaws.com)
+
+- Hosted on AWS S3
+- Real-time analytics and reporting
+- User management for MoH administrators
+- Interactive data visualizations
+
+---
+
 ## Deployment Plan
 
 ### Phase 1: Deployment
 
 #### Week 5-6: Infrastructure Setup
-- [ ] **Cloud Server**: AWS EC2 (t3.medium) or DigitalOcean Droplet
-- [ ] **Database**: PostgreSQL 15+ (managed service)
-- [ ] **Storage**: S3 for backups
+- [x] **Cloud Server**: AWS EC2 (t3.medium) or DigitalOcean Droplet
+- [x] **Database**: PostgreSQL 15+ (managed service)
+- [x] **Storage**: S3 for backups
 - [ ] **Domain**: Register domain (e.g., cmam-southsudan.org)
 - [ ] **SSL**: Let's Encrypt certificates
 
