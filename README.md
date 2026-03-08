@@ -487,6 +487,14 @@ Signs      Model 1              Dashboard                                   CHW 
 - User management for MoH administrators
 - Interactive data visualizations
 
+### 🎥 Demo Video
+**Watch Full System Demo**: [Google Drive Video](https://drive.google.com/file/d/1qRxHTD36S2WSzWqS2LxQNqerkk_lD6FO/view?usp=sharing)
+
+- Complete system walkthrough
+- Mobile app demonstration
+- Web dashboard features
+- ML model predictions in action
+
 ---
 
 ## Deployment Plan
