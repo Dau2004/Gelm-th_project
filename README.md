@@ -24,6 +24,31 @@
 - [License](#-license)
 
 ---
+## 🚀 Live Deployment
+
+### Web Dashboard (Production)
+**URL**: [http://gelmath-dashboard-2026.s3-website-us-east-1.amazonaws.com](http://gelmath-dashboard-2026.s3-website-us-east-1.amazonaws.com)
+
+- Hosted on AWS S3
+- Real-time analytics and reporting
+- User management for MoH administrators
+- Interactive data visualizations
+
+### 📱 Mobile App (Android APK)
+**Download**: [gelmath-cmam-v1.0.0.apk](distribution/gelmath-cmam-v1.0.0.apk)
+
+- Version: 1.0.0
+- Size: 23 MB
+- Offline-first architecture
+- Real-time ML predictions
+
+### 🎥 Demo Video
+**Watch Full System Demo**: [Google Drive Video](https://drive.google.com/drive/folders/1yYBXXQeaABqXsDZkCdAduWt2RBQH-fXQ?usp=sharing)
+
+- Complete system walkthrough
+- Mobile app demonstration
+- Web dashboard features
+- ML model predictions in action
 
 ## Description
 
@@ -494,111 +519,10 @@ Signs      Model 1              Dashboard                                   CHW 
 
 ---
 
-## 🚀 Live Deployment
-
-### Web Dashboard (Production)
-**URL**: [http://gelmath-dashboard-2026.s3-website-us-east-1.amazonaws.com](http://gelmath-dashboard-2026.s3-website-us-east-1.amazonaws.com)
-
-- Hosted on AWS S3
-- Real-time analytics and reporting
-- User management for MoH administrators
-- Interactive data visualizations
-
-### 📱 Mobile App (Android APK)
-**Download**: [gelmath-cmam-v1.0.0.apk](distribution/gelmath-cmam-v1.0.0.apk)
-
-- Version: 1.0.0
-- Size: 23 MB
-- Offline-first architecture
-- Real-time ML predictions
-
-### 🎥 Demo Video
-**Watch Full System Demo**: [Google Drive Video](https://drive.google.com/file/d/1qRxHTD36S2WSzWqS2LxQNqerkk_lD6FO/view?usp=sharing)
-
-- Complete system walkthrough
-- Mobile app demonstration
-- Web dashboard features
-- ML model predictions in action
 
 ---
 
-## Deployment Plan
 
-### Phase 1: Deployment
-
-#### Week 5-6: Infrastructure Setup
-- [x] **Cloud Server**: AWS EC2 (t3.medium) or DigitalOcean Droplet
-- [x] **Database**: PostgreSQL 15+ (managed service)
-- [x] **Storage**: S3 for backups
-- [ ] **Domain**: Register domain (e.g., cmam-southsudan.org)
-- [ ] **SSL**: Let's Encrypt certificates
-
-#### Week 5-6: Backend Deployment
-```bash
-# Production server setup
-sudo apt update && sudo apt upgrade -y
-sudo apt install python3.13 postgresql nginx
-
-# Clone repository
-git clone https://github.com/YOUR_USERNAME/CMAM_ML_System.git
-cd CMAM_ML_System/cmam_backend
-
-# Setup virtual environment
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt gunicorn
-
-# Configure Gunicorn
-gunicorn cmam_project.wsgi:application --bind 0.0.0.0:8000
-
-# Setup Nginx reverse proxy
-sudo nano /etc/nginx/sites-available/cmam
-```
-
-**Nginx Configuration**:
-```nginx
-server {
-    listen 80;
-    server_name api.cmam-southsudan.org;
-
-    location / {
-        proxy_pass http://127.0.0.1:8000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-    }
-
-    location /static/ {
-        alias /var/www/cmam/static/;
-    }
-}
-```
-
-#### Week 5-6: Web Dashboard Deployment
-```bash
-cd gelmath_web
-
-# Build production bundle
-npm run build
-
-# Deploy to Netlify/Vercel
-netlify deploy --prod
-
-# Or serve with Nginx
-sudo cp -r build/* /var/www/cmam/dashboard/
-```
-
-#### Week 7-8: Mobile App Distribution
-- [ ] **Android**: Publish to Google Play Store
-  ```bash
-  flutter build appbundle --release
-  # Upload to Play Console
-  ```
-- [ ] **Alternative**: APK direct distribution for pilot
-
-
-
-
----
 
 ## 🤖 Models
 
