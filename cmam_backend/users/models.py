@@ -16,8 +16,8 @@ class CHWUser(AbstractUser):
     is_active_chw = models.BooleanField(default=True)
     
     # Doctor-specific fields
-    doctor_title = models.CharField(max_length=100, blank=True, help_text="e.g., Pediatrician, General Practitioner")
-    doctor_specialization = models.CharField(max_length=200, blank=True, help_text="e.g., Child Nutrition Specialist, Emergency Medicine")
+    doctor_title = models.CharField(max_length=100, blank=True, help_text="e.g., Dr., Prof., Consultant")
+    doctor_specialization = models.CharField(max_length=200, blank=True, help_text="e.g., Pediatrician, General Practitioner, Nutritionist")
     doctor_description = models.TextField(blank=True, help_text="Brief description of expertise and experience")
     years_experience = models.PositiveIntegerField(null=True, blank=True, help_text="Years of medical experience")
     
@@ -38,13 +38,29 @@ class CHWUser(AbstractUser):
     def display_name_for_referral(self):
         """Display name for CHW referral selection"""
         if self.role == 'DOCTOR':
-            name = f"Dr. {self.get_full_name()}"
+            # Build the display name
+            name_parts = []
+            
+            # Add title (Dr., Prof., etc.)
             if self.doctor_title:
-                name += f" - {self.doctor_title}"
+                name_parts.append(self.doctor_title)
+            
+            # Add full name
+            full_name = self.get_full_name().strip()
+            if full_name:
+                name_parts.append(full_name)
+            else:
+                name_parts.append(self.username)
+            
+            # Join title and name
+            display_name = " ".join(name_parts)
+            
+            # Add specialization if available
             if self.doctor_specialization:
-                name += f" ({self.doctor_specialization})"
-            return name
-        return self.get_full_name()
+                display_name += f" - {self.doctor_specialization}"
+                
+            return display_name
+        return self.get_full_name() or self.username
     
     @property
     def doctor_info_summary(self):
