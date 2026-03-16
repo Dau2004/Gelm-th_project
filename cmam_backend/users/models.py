@@ -41,19 +41,20 @@ class CHWUser(AbstractUser):
             # Build the display name
             name_parts = []
             
-            # Add title (Dr., Prof., etc.)
-            if self.doctor_title:
-                name_parts.append(self.doctor_title)
-            
-            # Add full name
+            # Get full name
             full_name = self.get_full_name().strip()
-            if full_name:
-                name_parts.append(full_name)
-            else:
-                name_parts.append(self.username)
+            if not full_name:
+                full_name = self.username
             
-            # Join title and name
-            display_name = " ".join(name_parts)
+            # Check if full name already contains title
+            if full_name.startswith(('Dr.', 'Prof.', 'Consultant')):
+                display_name = full_name
+            else:
+                # Add title if available and name doesn't already have one
+                if self.doctor_title:
+                    display_name = f"{self.doctor_title} {full_name}"
+                else:
+                    display_name = full_name
             
             # Add specialization if available
             if self.doctor_specialization:
