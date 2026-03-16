@@ -17,7 +17,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'role', 
                   'phone', 'facility', 'facility_name', 'facility_input', 'state', 'is_active', 
-                  'created_at', 'last_login']
+                  'created_at', 'last_login', 'doctor_title', 'doctor_specialization', 
+                  'doctor_description', 'years_experience']
         read_only_fields = ['id', 'created_at', 'last_login', 'facility']
     
     def update(self, instance, validated_data):
@@ -49,7 +50,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'email', 'password', 'password2', 'first_name', 
-                  'last_name', 'role', 'phone', 'facility_input', 'state']
+                  'last_name', 'role', 'phone', 'facility_input', 'state',
+                  'doctor_title', 'doctor_specialization', 'doctor_description', 'years_experience']
     
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
