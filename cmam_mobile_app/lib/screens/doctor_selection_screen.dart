@@ -200,26 +200,26 @@ class _DoctorSelectionScreenState extends State<DoctorSelectionScreen> {
                     doctor['display_name_for_referral'] ?? 
                     (doctor['first_name'] != null && doctor['last_name'] != null 
                         ? '${doctor['doctor_title'] ?? ''} ${doctor['first_name']} ${doctor['last_name']}'
-                        : doctor['username']).trim(),
+                        : doctor['username'] ?? '').trim(),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  if (doctor['doctor_specialization'] != null && doctor['doctor_specialization'].isNotEmpty)
+                  if (doctor['doctor_specialization'] != null && doctor['doctor_specialization'].toString().isNotEmpty)
                     Text(
-                      doctor['doctor_specialization'],
+                      doctor['doctor_specialization'].toString(),
                       style: TextStyle(fontSize: 13, color: Colors.blue[700], fontWeight: FontWeight.w500),
                     ),
                   if (doctor['facility'] != null)
                     Text(
-                      doctor['facility'],
+                      doctor['facility'].toString(),
                       style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                     ),
                   if (doctor['phone'] != null)
                     Text(
-                      doctor['phone'],
+                      doctor['phone'].toString(),
                       style: TextStyle(fontSize: 12, color: Colors.grey[500]),
                     ),
                 ],
