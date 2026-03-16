@@ -20,26 +20,61 @@ def update_doctors():
     for doctor in doctors:
         print(f"   Username: {doctor.username}, Name: {doctor.get_full_name()}, Current Title: {doctor.doctor_title}, Current Specialization: {doctor.doctor_specialization}")
     
-    # Get actual usernames from database and update them
-    doctor_updates = {}
+    # Update all doctors found in the system
+    doctor_updates = {
+        'kuir': {
+            'doctor_title': 'Dr.',
+            'doctor_specialization': 'Pediatrician',
+            'years_experience': 5,
+            'doctor_description': 'Specialist in child nutrition and malnutrition treatment'
+        },
+        'doctor_user': {
+            'doctor_title': 'Dr.',
+            'doctor_specialization': 'General Practitioner',
+            'years_experience': 8,
+            'doctor_description': 'General practice with focus on community health'
+        },
+        'ajang': {
+            'doctor_title': 'Dr.',
+            'doctor_specialization': 'Nutritionist',
+            'years_experience': 7,
+            'doctor_description': 'Clinical nutritionist specializing in acute malnutrition'
+        },
+        'peter_deng': {
+            'doctor_title': 'Dr.',
+            'doctor_specialization': 'Family Medicine',
+            'years_experience': 6,
+            'doctor_description': 'Family medicine physician with pediatric experience'
+        },
+        'mary_akol': {
+            'doctor_title': 'Dr.',
+            'doctor_specialization': 'Internal Medicine',
+            'years_experience': 10,
+            'doctor_description': 'Internal medicine specialist with nutrition expertise'
+        },
+        'john_garang': {
+            'doctor_title': 'Prof.',
+            'doctor_specialization': 'Pediatric Nutrition',
+            'years_experience': 15,
+            'doctor_description': 'Professor of pediatric nutrition and malnutrition research'
+        },
+        'majok': {
+            'doctor_title': 'Dr.',
+            'doctor_specialization': 'Pediatrician',
+            'years_experience': 5,
+            'doctor_description': 'Specialist in child nutrition and malnutrition treatment'
+        },
+        'doctor1': {
+            'doctor_title': 'Dr.',
+            'doctor_specialization': 'General Practitioner',
+            'years_experience': 8,
+            'doctor_description': 'General practice with focus on community health'
+        }
+    }
     
+    # Also update any doctor found in the system with a default if not in the list above
     for doctor in doctors:
-        if doctor.username == 'majok':
-            doctor_updates[doctor.username] = {
-                'doctor_title': 'Dr.',
-                'doctor_specialization': 'Pediatrician',
-                'years_experience': 5,
-                'doctor_description': 'Specialist in child nutrition and malnutrition treatment'
-            }
-        elif doctor.username == 'doctor1':
-            doctor_updates[doctor.username] = {
-                'doctor_title': 'Dr.',
-                'doctor_specialization': 'General Practitioner',
-                'years_experience': 8,
-                'doctor_description': 'General practice with focus on community health'
-            }
-        else:
-            # Default update for any other doctors
+        if doctor.username not in doctor_updates:
             doctor_updates[doctor.username] = {
                 'doctor_title': 'Dr.',
                 'doctor_specialization': 'General Medicine',
