@@ -4,7 +4,7 @@ import '../models/child_assessment.dart';
 import 'auth_service.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://100.54.11.150/api'; // Production EC2
+  static const String baseUrl = 'http://100.54.11.150:8000/api'; // Production EC2
 
   static Future<String?> _getToken() async {
     return await AuthService.getAccessToken();

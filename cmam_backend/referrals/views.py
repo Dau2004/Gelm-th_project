@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import Referral
 from .serializers import ReferralSerializer, ReferralCreateSerializer, ReferralUpdateSerializer
+from users.models import CHWUser
+from users.serializers import CHWUserSerializer
 
 class ReferralViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
@@ -25,6 +27,17 @@ class ReferralViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(chw_user=self.request.user)
+    
+    @action(detail=False, methods=['get'])
+    def active_doctors(self, request):
+        """Get list of active doctors for referrals"""
+        doctors = CHWUser.objects.filter(
+            role='DOCTOR',
+            is_active=True
+        ).order_by('first_name', 'last_name')
+        
+        serializer = CHWUserSerializer(doctors, many=True)
+        return Response(serializer.data)
     
     @action(detail=False, methods=['post'])
     def bulk_create(self, request):
