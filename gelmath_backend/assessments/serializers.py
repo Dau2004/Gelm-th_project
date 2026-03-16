@@ -84,13 +84,21 @@ class TreatmentRecordSerializer(serializers.ModelSerializer):
 class DoctorProfileSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
     facility_name = serializers.CharField(source='facility.name', read_only=True)
+    display_name_for_referral = serializers.CharField(source='display_name_with_title', read_only=True)
     
     class Meta:
         model = User
-        fields = ['id', 'username', 'full_name', 'email', 'phone', 'facility', 'facility_name', 'state']
+        fields = ['id', 'username', 'full_name', 'display_name_for_referral', 'email', 'phone', 
+                  'facility', 'facility_name', 'state', 'doctor_title', 'doctor_specialization', 
+                  'doctor_description', 'years_experience']
     
     def get_full_name(self, obj):
-        return f"Dr. {obj.first_name} {obj.last_name}" if obj.first_name else obj.username
+        if obj.doctor_title and obj.first_name and obj.last_name:
+            return f"{obj.doctor_title} {obj.first_name} {obj.last_name}"
+        elif obj.first_name and obj.last_name:
+            return f"{obj.first_name} {obj.last_name}"
+        else:
+            return obj.username
 
 
 class ReferralSerializer(serializers.ModelSerializer):
