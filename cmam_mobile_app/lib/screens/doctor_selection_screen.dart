@@ -197,16 +197,24 @@ class _DoctorSelectionScreenState extends State<DoctorSelectionScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    doctor['full_name'] ?? doctor['username'],
+                    doctor['display_name_for_referral'] ?? 
+                    (doctor['first_name'] != null && doctor['last_name'] != null 
+                        ? '${doctor['doctor_title'] ?? ''} ${doctor['first_name']} ${doctor['last_name']}'
+                        : doctor['username']).trim(),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  if (doctor['facility_name'] != null)
+                  if (doctor['doctor_specialization'] != null && doctor['doctor_specialization'].isNotEmpty)
                     Text(
-                      doctor['facility_name'],
+                      doctor['doctor_specialization'],
+                      style: TextStyle(fontSize: 13, color: Colors.blue[700], fontWeight: FontWeight.w500),
+                    ),
+                  if (doctor['facility'] != null)
+                    Text(
+                      doctor['facility'],
                       style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                     ),
                   if (doctor['phone'] != null)
