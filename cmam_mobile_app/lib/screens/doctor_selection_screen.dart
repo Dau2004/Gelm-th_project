@@ -234,15 +234,11 @@ class _DoctorSelectionScreenState extends State<DoctorSelectionScreen> {
                       doctor['doctor_specialization'].toString(),
                       style: TextStyle(fontSize: 13, color: Colors.blue[700], fontWeight: FontWeight.w500),
                     ),
-                  if (doctor['facility'] != null && doctor['facility'].toString().isNotEmpty)
+                  const SizedBox(height: 2),
+                  if (doctor['facility_name'] != null && doctor['facility_name'].toString().isNotEmpty)
                     Text(
-                      doctor['facility'].toString(),
+                      doctor['facility_name'].toString(),
                       style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                    ),
-                  if (doctor['phone'] != null && doctor['phone'].toString().isNotEmpty)
-                    Text(
-                      doctor['phone'].toString(),
-                      style: TextStyle(fontSize: 12, color: Colors.grey[500]),
                     ),
                 ],
               ),
