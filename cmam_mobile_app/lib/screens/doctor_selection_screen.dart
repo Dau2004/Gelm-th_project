@@ -80,6 +80,31 @@ class _DoctorSelectionScreenState extends State<DoctorSelectionScreen> {
     }
   }
 
+  String _buildDoctorDisplayName(Map<String, dynamic> doctor) {
+    // Use display_name_for_referral if available
+    if (doctor['display_name_for_referral'] != null && 
+        doctor['display_name_for_referral'].toString().isNotEmpty) {
+      return doctor['display_name_for_referral'].toString();
+    }
+    
+    // Build name from components
+    String name = '';
+    
+    // Add title if available
+    if (doctor['doctor_title'] != null && doctor['doctor_title'].toString().isNotEmpty) {
+      name += doctor['doctor_title'].toString() + ' ';
+    }
+    
+    // Add first and last name
+    if (doctor['first_name'] != null && doctor['last_name'] != null) {
+      name += '${doctor['first_name']} ${doctor['last_name']}';
+    } else if (doctor['username'] != null) {
+      name += doctor['username'].toString();
+    }
+    
+    return name.trim().isNotEmpty ? name.trim() : 'Unknown Doctor';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -197,10 +222,7 @@ class _DoctorSelectionScreenState extends State<DoctorSelectionScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    doctor['display_name_for_referral'] ?? 
-                    (doctor['first_name'] != null && doctor['last_name'] != null 
-                        ? '${doctor['doctor_title'] ?? ''} ${doctor['first_name']} ${doctor['last_name']}'
-                        : doctor['username'] ?? '').trim(),
+                    _buildDoctorDisplayName(doctor),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -212,12 +234,12 @@ class _DoctorSelectionScreenState extends State<DoctorSelectionScreen> {
                       doctor['doctor_specialization'].toString(),
                       style: TextStyle(fontSize: 13, color: Colors.blue[700], fontWeight: FontWeight.w500),
                     ),
-                  if (doctor['facility'] != null)
+                  if (doctor['facility'] != null && doctor['facility'].toString().isNotEmpty)
                     Text(
                       doctor['facility'].toString(),
                       style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                     ),
-                  if (doctor['phone'] != null)
+                  if (doctor['phone'] != null && doctor['phone'].toString().isNotEmpty)
                     Text(
                       doctor['phone'].toString(),
                       style: TextStyle(fontSize: 12, color: Colors.grey[500]),
