@@ -5,11 +5,12 @@ from .models import CHWUser
 class CHWUserSerializer(serializers.ModelSerializer):
     display_name_for_referral = serializers.ReadOnlyField()
     doctor_info_summary = serializers.ReadOnlyField()
+    facility_name = serializers.CharField(source='facility', read_only=True)
     
     class Meta:
         model = CHWUser
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'phone', 
-                  'state', 'facility', 'role', 'is_active_chw', 'created_at',
+                  'state', 'facility', 'facility_name', 'role', 'is_active_chw', 'created_at',
                   'doctor_title', 'doctor_specialization', 'doctor_description', 
                   'years_experience', 'display_name_for_referral', 'doctor_info_summary']
         read_only_fields = ['id', 'created_at']
