@@ -74,3 +74,10 @@ class CHWUserViewSet(viewsets.ModelViewSet):
         user.save()
         
         return Response({'message': 'Password reset successfully'})
+    
+    @action(detail=False, methods=['get'])
+    def doctors(self, request):
+        """Get list of doctors with their titles for referrals"""
+        doctors = CHWUser.objects.filter(role='DOCTOR', is_active=True)
+        serializer = CHWUserSerializer(doctors, many=True)
+        return Response(serializer.data)

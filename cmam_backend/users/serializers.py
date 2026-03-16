@@ -3,10 +3,15 @@ from django.contrib.auth import authenticate
 from .models import CHWUser
 
 class CHWUserSerializer(serializers.ModelSerializer):
+    display_name_for_referral = serializers.ReadOnlyField()
+    doctor_info_summary = serializers.ReadOnlyField()
+    
     class Meta:
         model = CHWUser
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'phone', 
-                  'state', 'facility', 'role', 'is_active_chw', 'created_at']
+                  'state', 'facility', 'role', 'is_active_chw', 'created_at',
+                  'doctor_title', 'doctor_specialization', 'doctor_description', 
+                  'years_experience', 'display_name_for_referral', 'doctor_info_summary']
         read_only_fields = ['id', 'created_at']
 
 class CHWUserCreateSerializer(serializers.ModelSerializer):
@@ -15,7 +20,8 @@ class CHWUserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CHWUser
         fields = ['username', 'password', 'email', 'first_name', 'last_name', 
-                  'phone', 'state', 'facility', 'role']
+                  'phone', 'state', 'facility', 'role', 'doctor_title', 
+                  'doctor_specialization', 'doctor_description', 'years_experience']
     
     def create(self, validated_data):
         user = CHWUser.objects.create_user(
@@ -28,6 +34,10 @@ class CHWUserCreateSerializer(serializers.ModelSerializer):
             state=validated_data.get('state', ''),
             facility=validated_data.get('facility', ''),
             role=validated_data.get('role', 'CHW'),
+            doctor_title=validated_data.get('doctor_title', ''),
+            doctor_specialization=validated_data.get('doctor_specialization', ''),
+            doctor_description=validated_data.get('doctor_description', ''),
+            years_experience=validated_data.get('years_experience'),
         )
         return user
 
