@@ -16,74 +16,59 @@ def update_doctors():
     """Update existing doctors with sample data"""
     doctors = CHWUser.objects.filter(role='DOCTOR')
     
-    # Sample data for doctors
-    doctor_updates = [
-        {
-            'username': 'kuir',
-            'doctor_title': 'Dr.',
-            'doctor_specialization': 'Pediatrician',
-            'years_experience': 5,
-            'doctor_description': 'Specialist in child nutrition and malnutrition treatment'
-        },
-        {
-            'username': 'doctor_user',
-            'doctor_title': 'Dr.',
-            'doctor_specialization': 'General Practitioner',
-            'years_experience': 3,
-            'doctor_description': 'General practice with focus on community health'
-        },
-        {
-            'username': 'ajang',
-            'doctor_title': 'Dr.',
-            'doctor_specialization': 'Nutritionist',
-            'years_experience': 8,
-            'doctor_description': 'Clinical nutritionist specializing in acute malnutrition'
-        },
-        {
-            'username': 'dr_peter',
-            'doctor_title': 'Dr.',
-            'doctor_specialization': 'Family Medicine',
-            'years_experience': 6,
-            'doctor_description': 'Family medicine physician with pediatric experience'
-        },
-        {
-            'username': 'dr_mary',
-            'doctor_title': 'Dr.',
-            'doctor_specialization': 'Internal Medicine',
-            'years_experience': 10,
-            'doctor_description': 'Internal medicine specialist with nutrition expertise'
-        },
-        {
-            'username': 'john_garang',
-            'doctor_title': 'Prof.',
-            'doctor_specialization': 'Pediatric Nutrition',
-            'years_experience': 15,
-            'doctor_description': 'Professor of pediatric nutrition and malnutrition research'
-        }
-    ]
+    print("📋 Current doctors in system:")
+    for doctor in doctors:
+        print(f"   Username: {doctor.username}, Name: {doctor.get_full_name()}, Current Title: {doctor.doctor_title}, Current Specialization: {doctor.doctor_specialization}")
+    
+    # Get actual usernames from database and update them
+    doctor_updates = {}
+    
+    for doctor in doctors:
+        if doctor.username == 'majok':
+            doctor_updates[doctor.username] = {
+                'doctor_title': 'Dr.',
+                'doctor_specialization': 'Pediatrician',
+                'years_experience': 5,
+                'doctor_description': 'Specialist in child nutrition and malnutrition treatment'
+            }
+        elif doctor.username == 'doctor1':
+            doctor_updates[doctor.username] = {
+                'doctor_title': 'Dr.',
+                'doctor_specialization': 'General Practitioner',
+                'years_experience': 8,
+                'doctor_description': 'General practice with focus on community health'
+            }
+        else:
+            # Default update for any other doctors
+            doctor_updates[doctor.username] = {
+                'doctor_title': 'Dr.',
+                'doctor_specialization': 'General Medicine',
+                'years_experience': 3,
+                'doctor_description': 'Medical practitioner specializing in community health'
+            }
     
     updated_count = 0
-    for update_data in doctor_updates:
+    for username, update_data in doctor_updates.items():
         try:
-            doctor = CHWUser.objects.get(username=update_data['username'], role='DOCTOR')
+            doctor = CHWUser.objects.get(username=username, role='DOCTOR')
             doctor.doctor_title = update_data['doctor_title']
             doctor.doctor_specialization = update_data['doctor_specialization']
             doctor.years_experience = update_data['years_experience']
             doctor.doctor_description = update_data['doctor_description']
             doctor.save()
             
-            print(f"✅ Updated {doctor.username}: {doctor.doctor_title} {doctor.get_full_name()} - {doctor.doctor_specialization}")
+            print(f"✅ Updated {doctor.username}: {doctor.display_name_for_referral}")
             updated_count += 1
             
         except CHWUser.DoesNotExist:
-            print(f"❌ Doctor with username '{update_data['username']}' not found")
+            print(f"❌ Doctor with username '{username}' not found")
         except Exception as e:
-            print(f"❌ Error updating {update_data['username']}: {e}")
+            print(f"❌ Error updating {username}: {e}")
     
     print(f"\n🎉 Updated {updated_count} doctors successfully!")
     
-    # Display all doctors
-    print("\n📋 All doctors in system:")
+    # Display all doctors after update
+    print("\n📋 All doctors after update:")
     for doctor in CHWUser.objects.filter(role='DOCTOR'):
         print(f"   {doctor.username}: {doctor.display_name_for_referral}")
 
