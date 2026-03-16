@@ -17,12 +17,40 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    # Doctor-specific fields
+    doctor_title = models.CharField(max_length=20, blank=True, help_text="e.g., Dr., Prof., Mr., Ms.")
+    doctor_specialization = models.CharField(max_length=100, blank=True, help_text="e.g., Pediatrician, General Practitioner")
+    doctor_description = models.TextField(blank=True, help_text="Brief description of doctor's expertise")
+    years_experience = models.PositiveIntegerField(null=True, blank=True, help_text="Years of medical experience")
+    
     class Meta:
         db_table = 'users'
         ordering = ['-created_at']
     
     def __str__(self):
         return f"{self.username} ({self.get_role_display()})"
+    
+    @property
+    def display_name_with_title(self):
+        """Return formatted name with title for referrals"""
+        if self.role == 'DOCTOR' and self.doctor_title:
+            full_name = self.get_full_name() or self.username
+            return f"{self.doctor_title} {full_name}"
+        return self.get_full_name() or self.username
+    
+    @property
+    def doctor_info_display(self):
+        """Return formatted doctor info for display"""
+        if self.role == 'DOCTOR':
+            parts = []
+            if self.doctor_title:
+                parts.append(self.doctor_title)
+            if self.doctor_specialization:
+                parts.append(self.doctor_specialization)
+            if self.years_experience:
+                parts.append(f"{self.years_experience} years exp.")
+            return " | ".join(parts) if parts else "Doctor"
+        return ""
 
 
 class Facility(models.Model):

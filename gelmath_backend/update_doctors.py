@@ -10,11 +10,11 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gelmath_api.settings')
 django.setup()
 
-from users.models import CHWUser
+from accounts.models import User
 
 def update_doctors():
     """Update existing doctors with sample data"""
-    doctors = CHWUser.objects.filter(role='DOCTOR')
+    doctors = User.objects.filter(role='DOCTOR')
     
     print("📋 Current doctors in system:")
     for doctor in doctors:
@@ -85,17 +85,17 @@ def update_doctors():
     updated_count = 0
     for username, update_data in doctor_updates.items():
         try:
-            doctor = CHWUser.objects.get(username=username, role='DOCTOR')
+            doctor = User.objects.get(username=username, role='DOCTOR')
             doctor.doctor_title = update_data['doctor_title']
             doctor.doctor_specialization = update_data['doctor_specialization']
             doctor.years_experience = update_data['years_experience']
             doctor.doctor_description = update_data['doctor_description']
             doctor.save()
             
-            print(f"✅ Updated {doctor.username}: {doctor.display_name_for_referral}")
+            print(f"✅ Updated {doctor.username}: {doctor.display_name_with_title}")
             updated_count += 1
             
-        except CHWUser.DoesNotExist:
+        except User.DoesNotExist:
             print(f"❌ Doctor with username '{username}' not found")
         except Exception as e:
             print(f"❌ Error updating {username}: {e}")
@@ -104,8 +104,8 @@ def update_doctors():
     
     # Display all doctors after update
     print("\n📋 All doctors after update:")
-    for doctor in CHWUser.objects.filter(role='DOCTOR'):
-        print(f"   {doctor.username}: {doctor.display_name_for_referral}")
+    for doctor in User.objects.filter(role='DOCTOR'):
+        print(f"   {doctor.username}: {doctor.display_name_with_title}")
 
 if __name__ == '__main__':
     update_doctors()
