@@ -46,11 +46,40 @@ class AuthService {
   static Future<void> logout() async {
     await storage.deleteAll();
   }
-  
+
+  static Future<bool> refreshToken() async {
+    try {
+      final refresh = await storage.read(key: 'refresh_token');
+      if (refresh == null) return false;
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/token/refresh/'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'refresh': refresh}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        await storage.write(key: 'access_token', value: data['access']);
+        if (data['refresh'] != null) {
+          await storage.write(key: 'refresh_token', value: data['refresh']);
+        }
+        print('OK Token refreshed successfully');
+        return true;
+      } else {
+        print('FAIL Token refresh failed: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('FAIL Token refresh error: $e');
+      return false;
+    }
+  }
+
   static Future<String?> getAccessToken() async {
     return await storage.read(key: 'access_token');
   }
-  
+
   static Future<Map<String, String>> getAuthHeaders() async {
     final token = await getAccessToken();
     return {

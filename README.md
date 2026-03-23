@@ -27,20 +27,25 @@
 ## 🚀 Live Deployment
 
 ### Web Dashboard (Production)
-**URL**: [http://gelmath-dashboard-2026.s3-website-us-east-1.amazonaws.com](http://gelmath-dashboard-2026.s3-website-us-east-1.amazonaws.com)
+**URL**: [https://gelm-th-project-as48.vercel.app](https://gelm-th-project-as48.vercel.app)
 
-- Hosted on AWS S3
+- Hosted on Vercel (HTTPS)
+- Backend API on AWS EC2 via `https://api.deaglefarm.com/api`
 - Real-time analytics and reporting
 - User management for MoH administrators
 - Interactive data visualizations
 
 ### 📱 Mobile App (Android APK)
-**Download**: [gelmath-cmam-v1.0.0.apk](distribution/gelmath-cmam-v1.0.0.apk)
+**Download**: [Download APK from Google Drive](https://drive.google.com/file/d/1AV3Zb5Yis3VW-4KI35jChzfXjSEs4H3P/view?usp=sharing)
 
 - Version: 1.0.0
-- Size: 23 MB
+- Size: 24.3 MB
 - Offline-first architecture
 - Real-time ML predictions
+- Backend: `https://api.deaglefarm.com/api`
+
+> **Installation Note**: Enable "Install from unknown sources" on your Android device before installing the APK.
+> Settings → Apps → Special app access → Install unknown apps
 
 ### 🎥 Demo Video
 **Watch Full System Demo**: [Google Drive Video](https://drive.google.com/drive/folders/1yYBXXQeaABqXsDZkCdAduWt2RBQH-fXQ?usp=sharing)
@@ -351,14 +356,11 @@ flutter build ios --release
 
 **Configuration** (`lib/services/api_service.dart`):
 ```dart
-// For Android emulator
-static const String baseUrl = 'http://10.0.2.2:8000/api';
+// Production (current)
+static const String baseUrl = 'https://api.deaglefarm.com/api';
 
-// For iOS simulator
-static const String baseUrl = 'http://localhost:8000/api';
-
-// For physical device (use your computer's IP)
-static const String baseUrl = 'http://192.168.1.100:8000/api';
+// For local development (Android emulator)
+// static const String baseUrl = 'http://10.0.2.2:8000/api';
 ```
 
 ### 4️⃣ Web Dashboard Setup (React)
@@ -648,6 +650,6 @@ MIT License - See [LICENSE](LICENSE) file
 
 ---
 
-**Last Updated**: February 14, 2026
+**Last Updated**: March 23, 2026
 
 **Version**: 1.0.0

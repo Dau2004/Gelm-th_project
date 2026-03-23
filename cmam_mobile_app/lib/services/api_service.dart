@@ -18,49 +18,64 @@ class ApiService {
     return await AuthService.login(username, password);
   }
 
+  static Future<bool> _handleTokenRefresh() async {
+    final refreshed = await AuthService.refreshToken();
+    if (!refreshed) {
+      await logout();
+      return false;
+    }
+    return true;
+  }
+
   static Future<Map<String, dynamic>?> syncAssessment(ChildAssessment assessment) async {
     try {
-      final headers = await _getHeaders();
+      var headers = await _getHeaders();
       final token = await _getToken();
-      
+
       if (token == null) {
-        print('FAIL Sync failed: No authentication token found');
+        print('ERROR Sync failed: No authentication token found');
         return null;
       }
-      
+
       final payload = assessment.toApiMap();
-      print('📤 Syncing assessment: ${payload['child_id']}');
-      
+
       // Convert facility name to ID if needed
       if (payload['facility'] != null && payload['facility'] is String) {
         final facilityId = await _getFacilityIdByName(payload['facility']);
         if (facilityId != null) {
           payload['facility'] = facilityId;
-          print('OK Facility converted: ${payload['facility']} -> $facilityId');
         } else {
-          print('WARNING Facility not found, removing from payload');
           payload.remove('facility');
         }
       }
-      
-      print('[PACKAGE] Payload: ${jsonEncode(payload)}');
-      
-      final response = await http.post(
+
+      var response = await http.post(
         Uri.parse('$baseUrl/assessments/'),
         headers: headers,
         body: jsonEncode(payload),
       );
 
-      print('📥 Response: ${response.statusCode}');
-      
+      if (response.statusCode == 401) {
+        final refreshed = await _handleTokenRefresh();
+        if (!refreshed) {
+          print('ERROR Sync failed: Session expired, please login again');
+          return null;
+        }
+        headers = await _getHeaders();
+        response = await http.post(
+          Uri.parse('$baseUrl/assessments/'),
+          headers: headers,
+          body: jsonEncode(payload),
+        );
+      }
+
       if (response.statusCode == 201) {
-        print('PASS Sync successful!');
         return jsonDecode(response.body);
       }
-      print('FAIL Sync failed: ${response.statusCode} - ${response.body}');
+      print('ERROR Sync failed [${response.statusCode}]: ${response.body}');
       return null;
     } catch (e) {
-      print('FAIL Sync error: $e');
+      print('ERROR Sync error: $e');
       return null;
     }
   }
@@ -72,7 +87,7 @@ class ApiService {
         Uri.parse('$baseUrl/facilities/'),
         headers: headers,
       );
-      
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final facilities = data['results'] ?? data;
@@ -84,7 +99,7 @@ class ApiService {
       }
       return null;
     } catch (e) {
-      print('Facility lookup error: $e');
+      print('ERROR Facility lookup failed: $e');
       return null;
     }
   }
@@ -102,9 +117,10 @@ class ApiService {
         final List<dynamic> results = data['results'] ?? data;
         return results.map((json) => ChildAssessment.fromMap(json)).toList();
       }
+      print('ERROR Fetch assessments failed [${response.statusCode}]: ${response.body}');
       return [];
     } catch (e) {
-      print('Fetch error: $e');
+      print('ERROR Fetch assessments error: $e');
       return [];
     }
   }
@@ -126,35 +142,34 @@ class ApiService {
 
   static Future<List<Map<String, dynamic>>> getActiveDoctors() async {
     try {
-      final token = await _getToken();
-      print('[KEY] Token for doctors: ${token != null ? "Present" : "Missing"}');
-      
-      final headers = await _getHeaders();
-      print('📤 Fetching doctors from: $baseUrl/referrals/active_doctors/');
-      
-      final response = await http.get(
+      var headers = await _getHeaders();
+
+      var response = await http.get(
         Uri.parse('$baseUrl/referrals/active_doctors/'),
         headers: headers,
       );
 
-      print('📥 Doctors response: ${response.statusCode}');
-      
       if (response.statusCode == 401) {
-        print('FAIL Authentication failed - clearing token');
-        await logout();
-        return [];
+        final refreshed = await _handleTokenRefresh();
+        if (!refreshed) {
+          print('ERROR Fetch doctors failed: Session expired, please login again');
+          return [];
+        }
+        headers = await _getHeaders();
+        response = await http.get(
+          Uri.parse('$baseUrl/referrals/active_doctors/'),
+          headers: headers,
+        );
       }
-      
+
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
-        print('PASS Doctors loaded: ${data.length}');
         return data.cast<Map<String, dynamic>>();
-      } else {
-        print('FAIL Failed to load doctors: ${response.statusCode} - ${response.body}');
       }
+      print('ERROR Fetch doctors failed [${response.statusCode}]: ${response.body}');
       return [];
     } catch (e) {
-      print('FAIL Get doctors error: $e');
+      print('ERROR Fetch doctors error: $e');
       return [];
     }
   }
@@ -166,30 +181,27 @@ class ApiService {
   }) async {
     try {
       final headers = await _getHeaders();
-      print('📤 Creating referral: ChildID=$childId, Doctor=$doctorId');
-      
-      // First, get the assessment ID from the server using child_id
+
       final assessmentResponse = await http.get(
         Uri.parse('$baseUrl/assessments/?child_id=$childId'),
         headers: headers,
       );
-      
+
       if (assessmentResponse.statusCode != 200) {
-        print('FAIL Failed to find assessment: ${assessmentResponse.statusCode}');
+        print('ERROR Create referral failed: Could not find assessment for child $childId [${assessmentResponse.statusCode}]');
         return false;
       }
-      
+
       final assessmentData = jsonDecode(assessmentResponse.body);
       final results = assessmentData['results'] ?? assessmentData;
-      
+
       if (results.isEmpty) {
-        print('FAIL No assessment found for child_id: $childId');
+        print('ERROR Create referral failed: No assessment found for child_id $childId');
         return false;
       }
-      
+
       final assessmentId = results[0]['id'];
-      print('OK Found assessment ID: $assessmentId');
-      
+
       final response = await http.post(
         Uri.parse('$baseUrl/referrals/'),
         headers: headers,
@@ -202,16 +214,13 @@ class ApiService {
         }),
       );
 
-      print('📥 Referral response: ${response.statusCode}');
       if (response.statusCode == 201) {
-        print('PASS Referral created successfully');
         return true;
-      } else {
-        print('FAIL Referral failed: ${response.body}');
-        return false;
       }
+      print('ERROR Create referral failed [${response.statusCode}]: ${response.body}');
+      return false;
     } catch (e) {
-      print('FAIL Create referral error: $e');
+      print('ERROR Create referral error: $e');
       return false;
     }
   }
