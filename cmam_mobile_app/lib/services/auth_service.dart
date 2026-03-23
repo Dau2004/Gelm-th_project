@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthService {
-  static const String baseUrl = 'http://100.54.11.150/api/auth'; // Production EC2
+  static const String baseUrl = 'https://api.deaglefarm.com/api/auth'; // Production EC2
   static const storage = FlutterSecureStorage();
   
   static Future<Map<String, dynamic>?> login(String username, String password) async {

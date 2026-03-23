@@ -5,7 +5,7 @@ import 'database_service.dart';
 import '../models/referral.dart';
 
 class SyncService {
-  static const String baseUrl = 'http://100.54.11.150/api';
+  static const String baseUrl = 'https://api.deaglefarm.com/api';
   
   static Future<int?> _getFacilityIdByName(String name) async {
     try {
