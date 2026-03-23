@@ -12,8 +12,8 @@
     "jspdf-autotable": "^5.0.7",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.563.0",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-icons": "^5.5.0",
     "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.13.0",
@@ -42,9 +42,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "overrides": {
-    "ajv": "^8.11.0"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",
