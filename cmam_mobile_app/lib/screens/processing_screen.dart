@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import '../models/child_assessment.dart';
 import '../models/referral.dart';
 import '../services/database_service.dart';
@@ -102,17 +104,18 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
     // Step 4: Pathway Recommendation
     setState(() {
       _currentStep = 4;
-      _currentMessage = 'AI model recommending care pathway...';
+      _currentMessage = 'Connecting to AI model...';
     });
-    await Future.delayed(const Duration(milliseconds: 1000));
-    
-    final prediction = PredictionService.predictPathway(
-      clinicalStatus: clinicalStatus,
-      edema: widget.edema,
-      appetite: widget.appetite,
-      dangerSigns: widget.dangerSigns,
-      muacZScore: zScore,
-    );
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    final prediction = await _getPrediction(clinicalStatus, zScore);
+
+    setState(() {
+      _currentMessage = prediction['ml_source'] == 'server_rf'
+          ? 'Random Forest model responded...'
+          : 'AI model recommending care pathway...';
+    });
+    await Future.delayed(const Duration(milliseconds: 800));
     
     setState(() => _pathwayResult = prediction);
     await Future.delayed(const Duration(milliseconds: 600));
@@ -195,6 +198,55 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
         ),
       );
     }
+  }
+
+  Future<Map<String, dynamic>> _getPrediction(String clinicalStatus, double? zScore) async {
+    // WHO Z-score is authoritative: healthy child needs no CMAM pathway
+    if (clinicalStatus == 'Healthy') {
+      return {
+        'pathway': 'None',
+        'confidence': 0.99,
+        'reasoning': 'WHO MUAC-for-age Z-score indicates healthy status — no CMAM programme required',
+        'ml_source': 'who_zscore',
+      };
+    }
+
+    try {
+      final headers = await AuthService.getAuthHeaders();
+      final response = await http.post(
+        Uri.parse('https://api.deaglefarm.com/api/predict/'),
+        headers: headers,
+        body: jsonEncode({
+          'muac_mm': widget.muacMm,
+          'age_months': widget.ageMonths,
+          'sex': widget.sex,
+          'edema': widget.edema,
+          'appetite': widget.appetite,
+          'danger_signs': widget.dangerSigns,
+        }),
+      ).timeout(const Duration(seconds: 6));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return {
+          'pathway': data['pathway'],
+          'confidence': data['confidence'],
+          'reasoning': 'Random Forest ML model (server) — pathway probabilities: ${data['probabilities']}',
+          'ml_source': 'server_rf',
+        };
+      }
+    } catch (_) {}
+
+    // Fallback: WHO guideline rules (offline)
+    final result = PredictionService.predictPathway(
+      clinicalStatus: clinicalStatus,
+      edema: widget.edema,
+      appetite: widget.appetite,
+      dangerSigns: widget.dangerSigns,
+      muacZScore: zScore,
+    );
+    result['ml_source'] = 'local_rules';
+    return result;
   }
 
   @override

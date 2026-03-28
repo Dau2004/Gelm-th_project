@@ -110,6 +110,61 @@ class ReferralViewSet(viewsets.ModelViewSet):
         return Response(DoctorProfileSerializer(doctors, many=True).data)
 
 
+_pathway_model = None
+
+def _get_pathway_model():
+    global _pathway_model
+    if _pathway_model is None:
+        model_path = os.path.join(os.path.dirname(__file__), '../../Models/cmam_model.pkl')
+        try:
+            _pathway_model = joblib.load(model_path)
+        except Exception as e:
+            print(f"Pathway model load error: {e}")
+    return _pathway_model
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def predict_pathway(request):
+    """Model 1: Run Random Forest on server and return CMAM pathway recommendation."""
+    data = request.data
+    muac_mm = data.get('muac_mm')
+    age_months = data.get('age_months')
+    sex = data.get('sex')
+    edema = data.get('edema', 0)
+    appetite = data.get('appetite', 'good')
+    danger_signs = data.get('danger_signs', 0)
+
+    if muac_mm is None or age_months is None or sex is None:
+        return Response({'error': 'Missing required fields: muac_mm, age_months, sex'}, status=400)
+
+    model = _get_pathway_model()
+    if model is None:
+        return Response({'error': 'Model unavailable'}, status=503)
+
+    # Encode exactly as done during training (LabelEncoder on dataset values)
+    # Dataset appetite values: 'good'=0, 'poor'=1  (no 'failed' in training data)
+    sex_encoded = 1 if sex == 'M' else 0
+    appetite_map = {'good': 0, 'poor': 1, 'failed': 1}  # 'failed' → treat as 'poor' (safe fallback)
+    appetite_encoded = appetite_map.get(appetite, 0)
+
+    # Feature order from model.feature_names_in_: ['muac_mm','age_months','sex','edema','appetite','danger_signs']
+    X = pd.DataFrame([[int(muac_mm), int(age_months), sex_encoded, int(edema), appetite_encoded, int(danger_signs)]],
+                     columns=['muac_mm', 'age_months', 'sex', 'edema', 'appetite', 'danger_signs'])
+
+    pathway = model.predict(X)[0]
+    proba = model.predict_proba(X)[0]
+    classes = list(model.classes_)
+    confidence = float(max(proba))
+
+    return Response({
+        'pathway': pathway,
+        'confidence': round(confidence, 4),
+        'probabilities': {cls: round(float(p), 4) for cls, p in zip(classes, proba)},
+        'ml_source': 'server_rf',
+    })
+
+
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def explain_prediction(request):
