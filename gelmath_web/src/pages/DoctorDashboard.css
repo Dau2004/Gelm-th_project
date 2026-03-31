@@ -653,7 +653,7 @@
   .metrics-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .referrals-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -661,16 +661,141 @@
 
 @media (max-width: 768px) {
   .sidebar {
-    width: 240px;
+    left: -300px;
+    width: 260px !important;
+    transition: left 0.3s ease;
   }
-  
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .sidebar-header h2,
+  .sidebar-nav .nav-item span,
+  .sidebar-footer .nav-item span {
+    display: block !important;
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+  }
+
   .main-content {
-    margin-left: 240px;
+    margin-left: 0;
+    width: 100%;
   }
-  
+
+  .top-bar {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .top-bar-left h1 {
+    font-size: 20px;
+  }
+
+  .top-bar-right {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+
   .metrics-grid,
   .charts-row,
   .referrals-grid {
     grid-template-columns: 1fr;
   }
+
+  .content-area {
+    padding: 16px;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .data-table {
+    min-width: 500px;
+  }
+
+  .filters-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+.mobile-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: #F4F7F6;
+  border: 1.5px solid #E5E7EB;
+  color: #0E4D34;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
+.top-bar {
+  background: #FFFFFF;
+  padding: 20px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(14, 77, 52, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.top-bar-left {
+  display: flex;
+  align-items: center;
+}
+
+.top-bar-left h1 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0E4D34;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.refresh-button {
+  background: #FFFFFF;
+  border: 1.5px solid #E5E7EB;
+  color: #0E4D34;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.refresh-button:hover {
+  border-color: #0E4D34;
+  box-shadow: 0 4px 12px rgba(14, 77, 52, 0.1);
 }

@@ -42,10 +42,12 @@ class SyncService {
       final headers = await AuthService.getAuthHeaders();
       int successCount = 0;
       
+      print('=== SYNC STARTED: ${unsyncedAssessments.length} assessment(s) pending ===');
+
       for (var assessment in unsyncedAssessments) {
         try {
           final payload = assessment.toApiMap();
-          
+
           // Convert facility name to ID
           if (payload['facility'] != null && payload['facility'] is String) {
             final facilityId = await _getFacilityIdByName(payload['facility']);
@@ -55,31 +57,36 @@ class SyncService {
               payload.remove('facility');
             }
           }
-          
-          print('[PACKAGE] Syncing: ${jsonEncode(payload)}');
-          
+
+          print('--- Syncing child: ${assessment.childId} | ${assessment.clinicalStatus} → ${assessment.recommendedPathway} | MUAC: ${assessment.muacMm}mm | Z-score: ${assessment.muacZScore}');
+
           final response = await http.post(
             Uri.parse('$baseUrl/assessments/'),
             headers: headers,
             body: jsonEncode(payload),
           );
-          
-          print('📥 Response ${response.statusCode}: ${response.body}');
-          
+
           if (response.statusCode == 201) {
             if (assessment.id != null) {
               await DatabaseService.instance.markAsSynced(int.parse(assessment.id!));
             }
             successCount++;
+            print('    OK Synced successfully (HTTP 201) → saved to server database');
+          } else {
+            print('    FAIL Sync failed (HTTP ${response.statusCode}): ${response.body}');
           }
         } catch (e) {
-          print('FAIL Failed to sync assessment ${assessment.childId}: $e');
+          print('    ERROR Network error for ${assessment.childId}: $e');
         }
       }
-      
+
+      final total = unsyncedAssessments.length;
+      final failed = total - successCount;
+      print('=== SYNC COMPLETE: $successCount/$total succeeded${failed > 0 ? ', $failed failed' : ''} ===');
+
       return {
         'success': successCount > 0,
-        'message': 'Synced $successCount of ${unsyncedAssessments.length} assessments',
+        'message': 'Synced $successCount of $total assessments',
         'count': successCount
       };
     } catch (e) {

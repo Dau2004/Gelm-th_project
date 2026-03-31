@@ -111,7 +111,7 @@ class ReferralViewSet(viewsets.ModelViewSet):
 
 
 _pathway_model = None
-
+# Load the pathway classification model once at module level (lazy load on first request)
 def _get_pathway_model():
     global _pathway_model
     if _pathway_model is None:

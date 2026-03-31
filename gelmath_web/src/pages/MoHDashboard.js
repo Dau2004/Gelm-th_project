@@ -47,7 +47,7 @@ function MoHDashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('overview');
   const [dateRange, setDateRange] = useState('30d');
   const [refreshing, setRefreshing] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   
   // User management state
   const [showUserModal, setShowUserModal] = useState(false);
@@ -428,6 +428,9 @@ function MoHDashboard({ onLogout }) {
 
   return (
     <div className="dashboard-container">
+      {sidebarOpen && (
+        <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
+      )}
       <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-header">
           {sidebarOpen && <h2>Gelmëth</h2>}
@@ -488,6 +491,9 @@ function MoHDashboard({ onLogout }) {
       <main className="main-content">
         <header className="top-bar">
           <div className="top-bar-left">
+            <button className="mobile-menu-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
+              <Menu size={20} />
+            </button>
             <h1>Ministry of Health Dashboard</h1>
             {refreshing && <span className="refresh-badge">Refreshing...</span>}
           </div>

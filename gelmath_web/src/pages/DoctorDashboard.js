@@ -11,7 +11,7 @@ function DoctorDashboard({ onLogout }) {
   const [loading, setLoading] = useState(true);
   const [selectedReferral, setSelectedReferral] = useState(null);
   const [filter, setFilter] = useState('pending');
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   const [prescription, setPrescription] = useState('');
   const [doctorNotes, setDoctorNotes] = useState('');
   const [doctorSignature, setDoctorSignature] = useState('');
@@ -108,6 +108,9 @@ function DoctorDashboard({ onLogout }) {
 
   return (
     <div className="doctor-dashboard">
+      {sidebarOpen && (
+        <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
+      )}
       <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-header">
           {sidebarOpen && <h2>Gelmëth</h2>}
@@ -144,6 +147,9 @@ function DoctorDashboard({ onLogout }) {
       <main className="main-content">
         <header className="top-bar">
           <div className="top-bar-left">
+            <button className="mobile-menu-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
+              <Menu size={20} />
+            </button>
             <h1>Doctor Dashboard</h1>
           </div>
           <div className="top-bar-right">
