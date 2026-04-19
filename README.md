@@ -112,6 +112,8 @@ The evaluation panel at the African Leadership University designated Gelmëth th
 
 ## System Architecture
 
+![Architecture](Images/Gelmaath_diagram_26.png)
+
 ```
 ┌──────────────────────────────────────────────────────┐
 │            Community Health Worker                   │
