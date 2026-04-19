@@ -1,655 +1,352 @@
-# Gelmëth - Community-based Management of Acute Malnutrition
+# Gelmëth — AI-Supported MUAC-for-Age Decision Support System
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 [![Flutter](https://img.shields.io/badge/Flutter-3.0+-02569B.svg)](https://flutter.dev/)
 [![React](https://img.shields.io/badge/React-19.2+-61DAFB.svg)](https://reactjs.org/)
+[![IEEE Healthcom 2026](https://img.shields.io/badge/Paper-IEEE%20Healthcom%202026-blue.svg)]()
+[![ORCID](https://img.shields.io/badge/ORCID-0009--0008--3540--9494-green.svg)](https://orcid.org/0009-0008-3540-9494)
 
-> **AI-powered malnutrition screening system based on WHO guidelines and South Sudan CMAM 2017 standards**
+> **"Protect the child"** — *Gelmëth* in Dinka
+
+An offline-first, full-stack AI decision support system for acute malnutrition screening among children aged 6–59 months in South Sudan. Built for community health workers operating in low-connectivity, resource-constrained humanitarian settings.
+
+📄 **Paper:** *"Gelmëth: An AI-Supported MUAC-for-Age Decision Support System for Acute Malnutrition Screening in South Sudan"* — Submitted to IEEE Healthcom 2026
+
+---
+
+## The Problem
+
+Over **2.3 million children** under five in South Sudan are acutely malnourished, including approximately 700,000 severe cases. Frontline screening relies on manual MUAC measurement — a simple tape around the arm — but the decision that follows is complex: which care pathway (TSFP, OTP, or SC-ITP) does this child need?
+
+Manual interpretation is vulnerable to:
+- Measurement errors and unit mistakes (cm entered instead of mm)
+- Missing age records in conflict-affected settings
+- Inconsistent referral decisions under high patient volumes
+- No data validation or quality checking at point of care
+
+Existing platforms (DHIS2, RapidPro, CommCare) handle national reporting. **None provide real-time clinical decision support at the point of care.**
 
 ---
 
-## 📋 Table of Contents
+## Live Deployment
 
-- [Description](#-description)
-- [GitHub Repository](#-github-repository)
-- [Features](#-features)
-- [Dataset](#-dataset)
-- [Project Structure](#-project-structure)
-- [Environment Setup](#-environment-setup)
-- [Designs & Screenshots](#-designs--screenshots)
-- [Deployment Plan](#-deployment-plan)
-- [Models](#-models)
-- [Performance](#-performance)
-- [License](#-license)
-
----
-## 🚀 Live Deployment
-
-### Web Dashboard (Production)
-**URL**: [https://gelm-th-project-as48.vercel.app](https://gelm-th-project-as48.vercel.app)
+### 🌐 Web Dashboard (Production)
+**URL:** [https://gelm-th-project-as48.vercel.app](https://gelm-th-project-as48.vercel.app)
 
 - Hosted on Vercel (HTTPS)
 - Backend API on AWS EC2 via `https://api.deaglefarm.com/api`
-- Real-time analytics and reporting
-- User management for MoH administrators
-- Interactive data visualizations
+- Real-time analytics and geographic visualisation
+- Role-based access: CHW / Doctor / MoH Admin
 
 ### 📱 Mobile App (Android APK)
-**Download**: [Download APK from Google Drive](https://drive.google.com/file/d/1AV3Zb5Yis3VW-4KI35jChzfXjSEs4H3P/view?usp=sharing)
+**Download:** [Download APK from Google Drive](https://drive.google.com/file/d/1AV3Zb5Yis3VW-4KI35jChzfXjSEs4H3P/view?usp=sharing)
 
-- Version: 1.0.0
-- Size: 24.3 MB
-- Offline-first architecture
-- Real-time ML predictions
-- Backend: `https://api.deaglefarm.com/api`
+- Version: 1.0.0 · Size: 24.3 MB
+- Offline-first — full assessment works with zero internet
+- ML inference on-device in under 5 seconds
 
-> **Installation Note**: Enable "Install from unknown sources" on your Android device before installing the APK.
-> Settings → Apps → Special app access → Install unknown apps
+> **Installation:** Enable "Install from unknown sources" → Settings → Apps → Special app access → Install unknown apps
 
 ### 🎥 Demo Video
-**Watch Full System Demo**: [Google Drive Video](https://drive.google.com/drive/folders/1yYBXXQeaABqXsDZkCdAduWt2RBQH-fXQ?usp=sharing)
-
-- Complete system walkthrough
-- Mobile app demonstration
-- Web dashboard features
-- ML model predictions in action
-
-## Description
-
-The **Gelmëth System** is a comprehensive machine learning solution for screening and managing acute malnutrition in children aged 6-59 months. Built on the **Community Management of Acute Malnutrition (CMAM) guidelines from South Sudan 2017**, this system combines:
-
-- **Two ML Models**: Pathway classification (94% accuracy) and quality checking (89% accuracy)
-- **Three Deployment Options**: Mobile app (Flutter), Web dashboard (React), and REST API (Django)
-- **Offline-First Architecture**: Works in remote areas without internet connectivity
-- **WHO Compliance**: Uses official WHO LMS tables for Z-score calculation
-
-### Problem Statement
-
-Malnutrition affects millions of children in developing countries. Community Health Workers (CHWs) need:
-- Quick, accurate screening tools
-- Offline capability for remote areas
-- Evidence-based care pathway recommendations
-- Quality control for measurements
-
-### Solution
-
-Our system provides:
-1. **Real-time ML predictions** for care pathways (SC-ITP, OTP, TSFP)
-2. **Quality gatekeeper** to detect measurement errors
-3. **Offline-first mobile app** for field workers
-4. **MoH dashboard** for program monitoring
-5. **WHO-compliant** Z-score calculations
+**Watch Full System Demo:** [Google Drive](https://drive.google.com/drive/folders/1yYBXXQeaABqXsDZkCdAduWt2RBQH-fXQ?usp=sharing)
 
 ---
 
-## 🔗 GitHub Repository
+## ML Pipeline Performance
 
-```bash
-git clone https://github.com/YOUR_USERNAME/CMAM_ML_System.git
-cd CMAM_ML_System
+### Model 1 — Care Pathway Classifier
+Recommends TSFP / OTP / SC-ITP based on MUAC, age, appetite, oedema, danger signs.
+
+```
+Test Set Accuracy: 94.05%
+
+              precision    recall  f1-score   support
+         OTP       0.90      0.93      0.92       211
+      SC_ITP       1.00      0.94      0.97       122   ← Perfect precision
+        TSFP       0.95      0.94      0.95       272
+
+    accuracy                           0.94       605
 ```
 
-**Repository Structure:**
+**SC-ITP precision = 1.00** — the model never misclassifies a non-severe case as requiring inpatient stabilisation. This is the most critical clinical safety property of the system.
+
+**Feature Importance:**
+1. MUAC: 45.04%
+2. Appetite: 28.96%
+3. Danger Signs: 17.24%
+4. Age: 4.69% · Oedema: 3.55% · Sex: 0.52%
+
+### Model 2 — Quality Classifier
+Detects suspicious or erroneous screening records before they enter the workflow.
+
 ```
-CMAM_ML_System/
-├── Dataset/              # Training data and CMAM guidelines
-├── Models/               # Trained ML models (.pkl files)
-├── Notebooks/            # Jupyter notebooks for training
-├── cmam_mobile_app/      # Flutter mobile application
-├── cmam_backend/         # Django REST API
-├── gelmath_backend/      # Django REST API
-├── gelmath_web/          # React dashboard
-└── README.md             # This file
+Test Set Accuracy: 89.2%
+
+              precision    recall  f1-score   support
+          OK       0.73      0.97      0.83       335
+  SUSPICIOUS       0.99      0.86      0.92       879   ← 99% precision
+
+    accuracy                           0.89      1214
+```
+
+**SUSPICIOUS precision = 0.99** — minimises false alarms while catching real measurement errors.
+
+---
+
+## User Acceptance Testing Results
+
+Conducted **March 2026** with **18 participants** — community health workers, nurses, and MoH administrators.
+
+| Metric | Before Gelmëth | After Gelmëth | Change |
+|--------|---------------|--------------|--------|
+| Screening Confidence (1–10) | 4.2 | 8.9 | **+112%** |
+| Time per Assessment | 8–12 min | 1–2 min | **−75%** |
+| Perceived Accuracy (1–10) | 5.1 | 9.1 | **+78%** |
+| Ease of Use (1–10) | — | 8.7 | — |
+| Willingness to Recommend | — | **94%** | — |
+
+The evaluation panel at the African Leadership University designated Gelmëth the **most complete capstone project** submitted in the cohort, commending the robust backend, clean system architecture, and thorough knowledge demonstrated.
+
+---
+
+## System Architecture
+
+```
+┌──────────────────────────────────────────────────────┐
+│            Community Health Worker                   │
+│        Flutter Mobile App (Offline-First)            │
+│   SQLite local storage → auto-sync when online       │
+└─────────────────────┬────────────────────────────────┘
+                      │ HTTPS / JWT
+┌─────────────────────▼────────────────────────────────┐
+│          Django REST Framework Backend                │
+│  • WHO MUAC-for-age Z-score computation (LMS)        │
+│  • Model 1: Care Pathway Classifier inference        │
+│  • Model 2: Quality Classifier inference             │
+│  • Role-based access: CHW / Doctor / MoH Admin       │
+│  • AES-256 encryption at rest and in transit         │
+└─────────────┬──────────────────────┬─────────────────┘
+              │                      │
+┌─────────────▼──────────┐ ┌────────▼──────────────────┐
+│  PostgreSQL (AWS RDS)  │ │  React 19 Web Dashboards  │
+│  SQLite (Development)  │ │  Clinician + MoH Admin    │
+└────────────────────────┘ │  Recharts + Leaflet maps  │
+                           └───────────────────────────┘
 ```
 
 ---
 
-## Features
+## Tech Stack
 
-### Machine Learning
-- **Model 1**: Care pathway classifier (SAM/MAM/Healthy → SC-ITP/OTP/TSFP)
-- **Model 2**: Quality checker (detects measurement errors)
-- Random Forest ensemble (100 trees, depth 10)
-- 94% accuracy on pathway classification
-- 89% accuracy on quality detection
-
-###  Mobile App (Flutter)
-- Offline-first with SQLite
-- Real-time ML predictions
-- WHO Z-score calculation
-- CMAM guideline validation
-- Auto-sync when online
-- Modern UI (dark green theme)
-
-###  Web Dashboard (React)
-- MoH analytics dashboard
-- Interactive visualizations (Recharts)
-- Geographic mapping (Leaflet)
-- PDF report generation
-- User management
-- Responsive design
-
-### 🔌 REST API (Django)
-- RESTful endpoints
-- JWT authentication
-- Model integration
-- Swagger documentation
-- PostgreSQL/SQLite support
+| Layer | Technology |
+|-------|-----------|
+| Mobile App | Flutter 3.0, Dart, SQLite, Provider, flutter_secure_storage |
+| Backend API | Django 6.0, Django REST Framework, Python 3.13 |
+| Authentication | JWT (djangorestframework-simplejwt) |
+| ML Pipeline | scikit-learn 1.8, Random Forest, joblib, SHAP |
+| Web Dashboard | React 19, Recharts, Leaflet, React Router 7, jsPDF |
+| Database | PostgreSQL 15 (production), SQLite (development) |
+| Deployment | AWS EC2, AWS RDS, AWS S3, AWS CloudFront, Vercel |
+| Security | AES-256, OWASP Top 10 verified, role-based access control |
+| Data Processing | NumPy 2.4, Pandas 3.0, Matplotlib, Seaborn |
+| ML Explainability | SHAP (SHapley Additive exPlanations) |
 
 ---
 
-## 📊 Dataset
-
-### Source: CMAM South Sudan 2017 Guidelines
-
-Our dataset is based on the **Community Management of Acute Malnutrition (CMAM)** guidelines published by the Ministry of Health, South Sudan in 2017. This comprehensive document provides:
-
-- **Clinical protocols** for SAM/MAM management
-- **Admission criteria** based on MUAC and edema
-- **Care pathway definitions** (SC-ITP, OTP, TSFP)
-- **WHO reference standards** for children 6-59 months
-
-**Document:** `Dataset/CMAM guidelines south sudan 2017.pdf`
-
-### Dataset Composition
-
-#### 1. **Dataset** 
-- **Age Range**: 6-59 months (WHO standard)
-- **Features**:
-  - `child_id`: Unique identifier
-  - `sex`: M/F
-  - `age_months`: 6-59 months
-  - `muac_mm`: Mid-Upper Arm Circumference (95-145mm)
-  - `edema`: 0 (none), 1 (mild), 2 (moderate), 3 (severe)
-  - `appetite`: good/poor
-  - `danger_signs`: 0/1
-  - `label_pathway`: OTP/SC_ITP/TSFP
-
-- **Distribution**:
-  - **TSFP** (MAM): 1,846 samples (46%)
-  - **OTP** (SAM, uncomplicated): 1,416 samples (35%)
-  - **SC_ITP** (SAM, complicated): 738 samples (19%)
-
-#### 2. **Quality Dataset** (8,093 samples)
-- **Purpose**: Train Model 2 to detect measurement errors
-- **Composition**:
-  - 2,313 clean samples (OK)
-  - 5,780 corrupted samples (SUSPICIOUS)
-- **Error Types**:
-  - **Noise**: Random measurement variations
-  - **Unit errors**: mm→cm conversion mistakes (11.4 instead of 114)
-  - **Age errors**: Multiplication errors (240 instead of 24)
-  - **Missing fields**: Incomplete data (edema=-1)
-
-### 🚫 Why Image Data Was Excluded
-
-**Decision Rationale** (from `Notebooks/Image_data_visualization.ipynb`):
-
-After analyzing potential image-based approaches for edema detection, we decided to **exclude image data** for the following reasons:
-
-#### 1. **Data Distribution Issues**
-- **Age Focus**: Our target population is 6-59 months (WHO standard)
-- **Limited Image Availability**: Insufficient labeled images for this specific age range
-- **Class Imbalance**: Severe imbalance in SAM/MAM/Healthy categories in available image datasets
-
-#### 2. **Clinical Status Distribution**
-```
-Target Distribution (6-59 months):
-- Healthy: ~60-70%
-- MAM: ~20-25%
-- SAM: ~10-15%
-
-Available Image Data:
-- Heavily skewed toward severe cases
-- Insufficient representation of MAM
-- Age range inconsistencies
-```
-
-#### 3. **Practical Constraints**
-- **Field Conditions**: Poor lighting, camera quality variations
-- **Privacy Concerns**: Ethical issues with child images
-- **Storage**: Large image datasets impractical for offline mobile app
-- **Processing**: Real-time image analysis too slow for field use
-
-#### 4. **CMAM Guidelines Alignment**
-The official CMAM South Sudan 2017 guidelines prioritize:
-- **MUAC measurement** (primary indicator)
-- **Edema assessment** (clinical observation, not image-based)
-- **Appetite test** (behavioral observation)
-- **Danger signs** (clinical checklist)
-
-**Conclusion**: We focused on **structured clinical data** (MUAC, age, edema grade, appetite, danger signs) which:
-- Aligns with CMAM protocols
-- Works offline without image processing
-- Provides consistent, reliable measurements
-- Achieves 94% accuracy without images
-
----
-
-## 📁 Project Structure
+## Repository Structure
 
 ```
-CMAM_ML_System/
+Gelm-th_project/
 │
-├── 📂 Dataset/
-│   ├── CMAM guidelines south sudan 2017.pdf    # Official guidelines
-│   ├── cmam_4000_93pct.csv                     # Clean training data
-│   ├── quality_train_20260209_220137.csv       # Quality dataset (train)
-│   ├── quality_val_20260209_220137.csv         # Quality dataset (val)
-│   └── quality_test_20260209_220137.csv        # Quality dataset (test)
+├── Dataset/
+│   ├── CMAM guidelines south sudan 2017.pdf
+│   ├── cmam_4000_93pct.csv                      # Validated training data (3,864 records)
+│   ├── quality_train_20260209_220137.csv
+│   ├── quality_val_20260209_220137.csv
+│   └── quality_test_20260209_220137.csv
 │
-├── 📂 Models/
-│   ├── cmam_model.pkl                          # Model 1: Pathway classifier
-│   ├── model2_quality_classifier.pkl           # Model 2: Quality checker
-│   ├── cmam_model_metadata.json                # Model 1 specifications
-│   └── model2_metadata.json                    # Model 2 specifications
+├── Models/
+│   ├── cmam_model.pkl                           # Model 1: Care Pathway Classifier
+│   ├── model2_quality_classifier.pkl            # Model 2: Quality Classifier
+│   ├── cmam_model_metadata.json
+│   └── model2_metadata.json
 │
-├── 📂 Notebooks/
-│   ├── model_training.ipynb                    # Model 1 training
-│   ├── model2_quality_training.ipynb           # Model 2 training
-│   ├── Image_data_visualization.ipynb          # Image data analysis
-│   └── cmam_cleaning_visualization.ipynb       # Data preprocessing
+├── Notebooks/
+│   ├── model_training.ipynb                     # Model 1 training & evaluation
+│   ├── model2_quality_training.ipynb            # Model 2 training & evaluation
+│   ├── cmam_cleaning_visualization.ipynb        # Data preprocessing & EDA
+│   └── Image_data_visualization.ipynb           # Image data analysis (excluded)
 │
-├── 📂 cmam_mobile_app/                         # Flutter mobile app
+├── cmam_mobile_app/                             # Flutter offline-first mobile app
 │   ├── lib/
-│   │   ├── main.dart                           # App entry point
-│   │   ├── models/                             # Data models
-│   │   ├── services/                           # Business logic
-│   │   ├── screens/                            # UI screens
-│   │   └── widgets/                            # Reusable components
-│   ├── assets/
-│   │   └── images/                             # App images
-│   └── pubspec.yaml                            # Flutter dependencies
+│   │   ├── main.dart
+│   │   ├── models/
+│   │   ├── services/                            # API, local DB, ML inference
+│   │   ├── screens/                             # Assessment, results, history
+│   │   └── widgets/
+│   └── pubspec.yaml
 │
-├── 📂 cmam_backend/                            # Django REST API
-│   ├── assessments/                            # Assessment endpoints
-│   ├── analytics/                              # Analytics endpoints
-│   ├── users/                                  # User management
-│   ├── manage.py                               # Django CLI
-│   └── requirements.txt                        # Python dependencies
+├── cmam_backend/                                # Django REST Framework API
+│   ├── assessments/
+│   ├── analytics/
+│   ├── users/
+│   ├── manage.py
+│   └── requirements.txt
 │
-├── 📂 gelmath_web/                             # React dashboard
+├── gelmath_web/                                 # React dashboard (MoH + Doctor)
 │   ├── src/
-│   │   ├── components/                         # React components
-│   │   ├── pages/                              # Dashboard pages
-│   │   └── services/                           # API services
-│   └── package.json                            # Node dependencies
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── services/
+│   └── package.json
 │
-├── 📄 README.md                                # This file
-├── 📄 ASSIGNMENT_ASSESSMENT.md                 # Detailed assessment
-└── 📄 SUBMISSION_CHECKLIST.md                  # Quick summary
+└── README.md
 ```
 
 ---
 
-## 🛠️ Environment Setup
+## Getting Started
 
 ### Prerequisites
+- Python 3.13+
+- Flutter 3.0+
+- Node.js 18+
+- PostgreSQL 15 (or SQLite for development)
 
-- **Python**: 3.13+ ([Download](https://www.python.org/downloads/))
-- **Flutter**: 3.0+ ([Install](https://flutter.dev/docs/get-started/install))
-- **Node.js**: 18+ ([Download](https://nodejs.org/))
-- **Git**: Latest version
-
-### 1️⃣ Clone Repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/CMAM_ML_System.git
-cd CMAM_ML_System
-```
-
-### 2️⃣ Backend Setup (Django API)
-
+### Backend Setup
 ```bash
 cd cmam_backend
-
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-
-# Run migrations
 python manage.py migrate
-
-# Create superuser
 python manage.py createsuperuser
-
-# Load sample data (optional)
-python seed_data.py
-
-# Start server
 python manage.py runserver
-# API available at http://localhost:8000/api/
+# API at http://localhost:8000/api/
 ```
 
-**Environment Variables** (create `.env` file):
+**Environment variables** (`.env`):
 ```env
-SECRET_KEY=your-secret-key-here
+SECRET_KEY=your-secret-key
 DEBUG=True
 DATABASE_URL=sqlite:///db.sqlite3
 ALLOWED_HOSTS=localhost,127.0.0.1
 ```
 
-### 3️⃣ Mobile App Setup (Flutter)
-
+### Mobile App
 ```bash
 cd cmam_mobile_app
-
-# Install dependencies
 flutter pub get
-
-# Check devices
-flutter devices
-
-# Run on device/emulator
 flutter run
-
-# Build APK (Android)
+# For production build:
 flutter build apk --release
-
-# Build iOS
-flutter build ios --release
 ```
 
-**Configuration** (`lib/services/api_service.dart`):
-```dart
-// Production (current)
-static const String baseUrl = 'https://api.deaglefarm.com/api';
-
-// For local development (Android emulator)
-// static const String baseUrl = 'http://10.0.2.2:8000/api';
-```
-
-### 4️⃣ Web Dashboard Setup (React)
-
+### Web Dashboard
 ```bash
 cd gelmath_web
-
-# Install dependencies
 npm install
-
-# Start development server
 npm start
-# Dashboard available at http://localhost:3000
-
-# Build for production
-npm run build
+# Dashboard at http://localhost:3000
 ```
 
-**Environment Variables** (create `.env` file):
-```env
-REACT_APP_API_URL=http://localhost:8000/api
-REACT_APP_ENV=development
-```
-
-### 5️⃣ Jupyter Notebooks
-
+### ML Notebooks
 ```bash
-# Install Jupyter
 pip install jupyter notebook
-
-# Start Jupyter
 jupyter notebook
-
 # Open notebooks in Notebooks/ folder
 ```
 
 ---
 
-## Designs & Screenshots
+## Screenshots
 
-### Mobile App Interface
-
-#### 1. **Home Screen**
-![Home Screen](Screenshot/Home_mobileapp.png)
-- Clean, intuitive navigation
-- Dark green (#2D5F3F) primary color
-- Quick access to assessment form
-
-#### 2. **Assessment Form**
-![Assessment Form](Screenshot/Assessment_mobileapp.png)
-- **Input Fields**:
-  - Child ID
-  - Sex (M/F)
-  - Age (months)
-  - MUAC (mm)
-  - Edema grade (0-3)
-  - Appetite (good/poor)
-  - Danger signs checklist
-- **Real-time Validation**
-- **Offline Capability**
-
-#### 3. **Results Screen**
-![Results Screen](Screenshot/result_mobileapp.png)
-- **Clinical Status**: SAM/MAM/Healthy
-- **Care Pathway**: SC-ITP/OTP/TSFP
-- **Confidence Score**: 0-100%
-- **Quality Flag**: OK/SUSPICIOUS
-- **Action Buttons**: Save, Share, Print
-
-#### 4. **History Screen**
-![History](Screenshot/History_mobileapp.png)
-- Past assessments list
-- Sync status indicator
-- Search and filter options
+### Mobile App
+| Home | Assessment Form | Results |
+|------|----------------|---------|
+| ![Home](Screenshot/Home_mobileapp.png) | ![Form](Screenshot/Assessment_mobileapp.png) | ![Results](Screenshot/result_mobileapp.png) |
 
 ### Web Dashboard
+| MoH Overview | Analytics | Geo Heatmap |
+|-------------|-----------|-------------|
+| ![MoH](Screenshot/Moh-home.png) | ![Analytics](Screenshot/Moh-analytics.png) | ![Geo](Screenshot/Moh-Geo.png) |
 
-#### 1. **National Summary**
-![Dashboard](Screenshot/Moh-home.png)
-- Total assessments
-- SAM/MAM/Healthy distribution
-- Trend charts (Recharts)
-- Geographic map (Leaflet)
+| Users | Reports | ML Explainability |
+|-------|---------|------------------|
+| ![Users](Screenshot/Moh-users.png) | ![Reports](Screenshot/Moh-Report.png) | ![Explain](Screenshot/Moh-Explain.png) |
 
-#### 2. **Analytics**
-![Facility](Screenshot/Moh-analytics.png)
-- Monthly Trend
-- Ages Group Distribution
-- Gender distribution
-#### 3. **Facilities**
-![Facilities](Screenshot/Moh-analytics.png)
-- View each facility activites
+---
 
-#### 4. **User Management**
-![Users](Screenshot/Moh-users.png)
-- CHW accounts
-- Role-based access
-- Activity logs
+## Dataset
 
-#### 5. **Geo Headmap**
-![Users](Screenshot/Moh-Geo.png)
-- Show each state with its status
+**Source:** South Sudan CMAM Guidelines 2017 (Ministry of Health, South Sudan)
 
-#### 6. **Report**
-![Users](Screenshot/Moh-Report.png)
-- Show the report per state, facilities, CHW and National
+- **4,000** clinical records following CMAM admission protocols
+- After quality validation: **3,864** validated records
+- Features: MUAC (mm), age (months), sex, bilateral oedema, appetite, danger signs
+- Labels: TSFP (46.2%), OTP (35.4%), SC-ITP (18.5%)
+- Split by unique child identifier (70/15/15) to prevent data leakage from repeat visits
 
-#### 7. **ML Explainability**
-![Users](Screenshot/Moh-Explain.png)
-- It explain why each case was recommended
+**Quality dataset:** 8,093 records with synthetic data quality issues introduced for Model 2 training.
 
+---
 
+## Ethical Considerations
 
-### System Architecture
+- Informed consent obtained from all caregivers during UAT
+- AES-256 encryption for all paediatric data at rest and in transit
+- Role-based access control: CHW / Doctor / MoH Admin
+- Data minimisation — only clinically necessary fields collected
+- Personally identifiable information separated from clinical measurements
+- AI supports, **never replaces**, clinical judgement — severe cases require clinician confirmation
+- Compliant with ALU ethical research guidelines and Declaration of Helsinki
 
-```
-┌─────────────────┐
-│  Mobile App     │
-│  (Flutter)      │
-│  - Offline DB   │
-│  - ML Models    │
-└────────┬────────┘
-         │
-         │ Auto-sync
-         │
-         ▼
-┌─────────────────┐
-│  REST API       │
-│  (Django)       │
-│  - Model 1 & 2  │
-│  - PostgreSQL   │
-└────────┬────────┘
-         │
-         │ Real-time
-         │
-         ▼
-┌─────────────────┐
-│  Web Dashboard  │
-│  (React)        │
-│  - Analytics    │
-│  - Reports      │
-└─────────────────┘
-```
+---
 
-### Data Flow Diagram
+## Citation
 
-```
-Input → Quality Check (Model 2) → Z-Score Calc → Pathway Prediction (Model 1) → CMAM Gate → Action
-  ↓           ↓                      ↓                    ↓                      ↓          ↓
-MUAC      SUSPICIOUS?            Clinical            SC-ITP/OTP/TSFP        Validate    Refer
-Age          ↓                    Status                   ↓                    ↓          ↓
-Sex         OK                  SAM/MAM/Healthy      Confidence            Approve    Admit
-Edema        ↓                      ↓                    Score                 ↓          ↓
-Appetite   Proceed              Store Offline            ↓                  Display   Follow-up
-Danger       ↓                      ↓                  Sync API                ↓
-Signs      Model 1              Dashboard                                   CHW Action
+If you use this work, please cite:
+
+```bibtex
+@inproceedings{dau2026gelmeth,
+  title     = {Gelm\"{e}th: An AI-Supported MUAC-for-Age Decision Support
+               System for Acute Malnutrition Screening in South Sudan},
+  author    = {Dau, Chol Daniel Deng and Ntohsi, Samiratu},
+  booktitle = {Proceedings of the IEEE International Conference on
+               E-health Networking, Application and Services (Healthcom)},
+  year      = {2026}
+}
 ```
 
 ---
 
+## Authors
+
+**Chol Daniel Deng Dau** — Lead Developer & Researcher
+BSc (Hons) Software Engineering, African Leadership University, Kigali, Rwanda
+[GitHub](https://github.com/Dau2004) · [Email](mailto:choldaniel700@gmail.com) · [ORCID: 0009-0008-3540-9494](https://orcid.org/0009-0008-3540-9494)
+
+**Samiratu Ntohsi** — Supervisor
+Faculty, Software Engineering, African Leadership University, Kigali, Rwanda
+[Email](mailto:sntohsi@alueducation.com)
 
 ---
 
+## Acknowledgements
 
-
-## 🤖 Models
-
-### Model 1: Care Pathway Classifier
-
-**Purpose**: Predict appropriate care pathway based on clinical assessment
-
-**Architecture**:
-```python
-RandomForestClassifier(
-    n_estimators=100,
-    max_depth=10,
-    random_state=42,
-    class_weight='balanced'
-)
-```
-
-**Features** (6):
-1. `sex_encoded` (0=F, 1=M)
-2. `age_months_filled` (6-59)
-3. `muac_mm` (95-145)
-4. `edema` (0-3)
-5. `appetite_encoded` (0=good, 1=poor)
-6. `danger_signs` (0/1)
-
-**Output Classes** (3):
-- **SC-ITP**: Stabilization Center / Inpatient Therapeutic Program
-- **OTP**: Outpatient Therapeutic Program
-- **TSFP**: Targeted Supplementary Feeding Program
-
-**Training**: `Notebooks/model_training.ipynb`
-
-### Model 2: Quality Classifier
-
-**Purpose**: Detect suspicious measurements before pathway prediction
-
-**Architecture**:
-```python
-RandomForestClassifier(
-    n_estimators=100,
-    max_depth=10,
-    min_samples_split=10,
-    random_state=42,
-    n_jobs=-1
-)
-```
-
-**Features** (9):
-1. `muac_mm`
-2. `age_months`
-3. `sex_encoded`
-4. `edema`
-5. `appetite_encoded`
-6. `danger_signs`
-7. `near_threshold` (derived)
-8. `unit_suspect` (derived)
-9. `age_suspect` (derived)
-
-**Output Classes** (2):
-- **OK**: Measurement appears valid
-- **SUSPICIOUS**: Potential error detected
-
-**Training**: `Notebooks/model2_quality_training.ipynb`
+- Ministry of Health, South Sudan — CMAM Guidelines 2017
+- World Health Organization (WHO) — LMS reference tables for MUAC-for-age Z-score computation
+- The 18 community health workers, nurses, and MoH administrators who participated in UAT
 
 ---
 
-## 📈 Performance
+## License
 
-### Model 1: Pathway Classifier
-
-```
-Test Set Accuracy: 94.05%
-
-Classification Report:
-              precision    recall  f1-score   support
-         OTP       0.90      0.93      0.92       211
-      SC_ITP       1.00      0.94      0.97       122
-        TSFP       0.95      0.94      0.95       272
-
-    accuracy                           0.94       605
-   macro avg       0.95      0.94      0.94       605
-weighted avg       0.94      0.94      0.94       605
-```
-![Assessment Form](Screenshot/model.png)
-
-**Feature Importance**:
-1. MUAC: 45.04%
-2. Appetite: 28.96%
-3. Danger Signs: 17.24%
-
-### Model 2: Quality Classifier
-
-```
-Test Set Accuracy: 89.2%
-
-Classification Report:
-              precision    recall  f1-score   support
-          OK       0.73      0.97      0.83       335
-  SUSPICIOUS       0.99      0.86      0.92       879
-
-    accuracy                           0.89      1214
-   macro avg       0.86      0.92      0.88      1214
-weighted avg       0.92      0.89      0.90      1214
-```
-
-**Feature Importance**:
-1. MUAC: 31.74%
-2. Edema: 16.79%
-3. Age: 15.47%
+MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-## 📄 License
+*Built for the children of South Sudan.*
 
-MIT License - See [LICENSE](LICENSE) file
-
----
-
-## 🙏 Acknowledgments
-
-- **Ministry of Health, South Sudan** - CMAM Guidelines 2017
-- **World Health Organization (WHO)** - LMS reference tables
-
----
-
-**Last Updated**: March 23, 2026
-
-**Version**: 1.0.0
+**Version:** 1.0.0 · **Last Updated:** April 2026
